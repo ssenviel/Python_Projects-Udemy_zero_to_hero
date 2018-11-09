@@ -24,10 +24,10 @@ class Value(enum.IntEnum):
 
 
 class Suit(enum.Enum):
-    HEART = enum.auto
-    SPADE = enum.auto
-    DIAMOND = enum.auto
-    CLUB = enum.auto
+    HEART = enum.auto()
+    SPADE = enum.auto()
+    DIAMOND = enum.auto()
+    CLUB = enum.auto()
 
 
 # card class
@@ -53,4 +53,22 @@ class Card():
 
 # end of the card class
 
+# deck class
+class Deck():
 
+
+    def __init__(self):
+        self.__cards = list();
+
+
+    # this will populate the set of cards that make up the deck
+    def generate_deck_cards(self):
+      for this_suit in Suit:
+          for this_value in Value:
+              self.__cards.add(Card(this_value, this_suit))
+
+      # this will shuffle the cards that make up the deck
+    def shuffle_cards(self):
+        pass;
+        #random.shuffle(self.__cards)
+# end of deck class
