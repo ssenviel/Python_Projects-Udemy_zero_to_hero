@@ -1,7 +1,7 @@
 import unittest
 #from blackjack import Card, Suit, Value, CardFaceState
 #import blackjack
-from blackjack import Suit, Value, CardFaceState, Card
+from blackjack import Suit, CardType, CardFaceState, Card
 
 verbosity_level=2;
 
@@ -9,7 +9,7 @@ class TestCard(unittest.TestCase):
 
     def setUp(self):
         print("running setup")
-        self.myTestCard = Card(Value.EIGHT, Suit.SPADE)
+        self.myTestCard = Card(CardType.EIGHT, Suit.SPADE)
 
     def tearDown(self):
         print("performing teardown")
@@ -19,7 +19,7 @@ class TestCard(unittest.TestCase):
         # check that what was in the setup is still there
     def test_initial_card_state(self):
         self.assertEqual(self.myTestCard.get_card_suit(), Suit.SPADE, "testing the suit")
-        self.assertEqual(self.myTestCard.get_card_value(), Value.EIGHT, "testing the value")
+        self.assertEqual(self.myTestCard.get_card_value(), 8, "testing the value")
         self.assertEqual(self.myTestCard.get_card_face_state(), CardFaceState.DOWN, "testing the card face state")
 
     def test_card_state_change(self):

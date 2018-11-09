@@ -1,12 +1,13 @@
 import unittest
 from blackjack import Deck, Card
 
-verbosity_level = 3;
+verbosity_level = 2;
 
 class TestDeck(unittest.TestCase):
 
     def setUp(self):
         self.myTestDeck = Deck()
+        self.myTestDeck.generate_deck_cards()
 
     def tearDown(self):
         del self.myTestDeck;
@@ -17,7 +18,7 @@ class TestDeck(unittest.TestCase):
         self.assertNotEqual(tempDeck, self.myTestDeck, "Deck has not been shuffled.")
 
     def test_deck_size(self):
-        self.assertEqual(len(self.myTestDeck), 52, "Deck is not the correct size!!")
+        self.assertEqual(len(self.myTestDeck.cards()), 52, "Deck is not the correct size!!")
 
 
 
