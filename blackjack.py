@@ -95,7 +95,8 @@ class Deck():
 
     # pops a card off the deck and returns the card
     def deal_card(self):
-        pass
+        return self.__cards.pop()
+
 
 # end of deck class
 

@@ -4,6 +4,7 @@ from blackjack import Deck, Card
 verbosity_level = 2;
 
 class TestDeck(unittest.TestCase):
+    expected_deck_size = 52
 
     def setUp(self):
         self.myTestDeck = Deck()
@@ -13,15 +14,18 @@ class TestDeck(unittest.TestCase):
         del self.myTestDeck;
 
     def test_deck_Randomness(self):
-        tempDeck = self.myTestDeck
+        tempDeckCards = self.myTestDeck.cards().copy();
         self.myTestDeck.shuffle_cards();
-        self.assertNotEqual(tempDeck, self.myTestDeck, "Deck has not been shuffled.")
+        self.assertNotEqual(tempDeckCards, self.myTestDeck.cards(), "Deck has not been shuffled.")
 
     def test_deck_size(self):
-        self.assertEqual(len(self.myTestDeck.cards()), 52, "Deck is not the correct size!!")
+        self.assertEqual(len(self.myTestDeck.cards()), self.expected_deck_size, "Deck is not the correct size!!")
 
-
-
+    def test_deal_card(self):
+        tempCard = self.myTestDeck.deal_card()
+        self.expected_deck_size -= 1
+        self.assertEqual(len(self.myTestDeck.cards()), self.expected_deck_size, "ERROR deck size is not correct")
+        self.assertTrue(isinstance(tempCard, Card))
 
 
 
