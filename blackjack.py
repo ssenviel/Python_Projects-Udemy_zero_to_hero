@@ -68,6 +68,22 @@ class Card():
     def get_card_suit(self):
         return self.__suit
 
+    def draw_card(selfs):
+        pass
+
+
+    def draw_club_card(value):
+        pass
+
+    def draw_heart_card(value):
+        pass
+
+    def draw_spade_card(value):
+        pass
+
+    def draw_diamond_card(value):
+        pass
+
 # end of the card class
 
 # deck class
@@ -100,4 +116,50 @@ class Deck():
 
 # end of deck class
 
+
+# player class
+class Player():
+    __hand = list()
+    __hand_value=0;
+
+    def __init__(self):
+        self.hand.clear()
+
+    # add a card to the players hand,
+    def recieve_card(self):
+        pass
+
+
+    # return the value of a player's hand
+    def hand_value(self):
+        pass
+
+    def draw_card(self):
+        pass
+
+
+    # draw a players hand
+    def display_hand(self):
+        pass
+
+    def __calc_hand_value(self):
+        pass
+
+    def get_hand_value(self):
+        pass
+
+
+
+# end of player class
+
+
+
+
+club_image = "C"
+diamond_image = "D"
+Heart_image = "H"
+Spade_image = "S"
+
+
+temp_card_str = "C\n  \n   \t\t\t {value}"\n\n
 
