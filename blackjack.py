@@ -2,6 +2,12 @@ import enum
 import random
 
 
+#club_image = u"\u2663"
+#diamond_image = u"\u2666"
+#heart_image = u"\u2665"
+#spade_image = u"\u2660"
+
+
 class CardFaceState(enum.Enum):
     DOWN = 0
     UP = 1
@@ -25,7 +31,7 @@ class CardType(enum.Enum):
 
 
 
-class Suit(enum.Enum):
+class SuitType(enum.Enum):
     HEART = enum.auto()
     SPADE = enum.auto()
     DIAMOND = enum.auto()
@@ -35,25 +41,35 @@ class Suit(enum.Enum):
 # card class
 class Card():
 
-    ValueDict = {CardType.ACE:1,
-                 CardType.TWO:2,
-                 CardType.THREE:3,
-                 CardType.FOUR:4,
-                 CardType.FIVE:5,
-                 CardType.SIX:6,
-                 CardType.SEVEN:7,
-                 CardType.EIGHT:8,
-                 CardType.NINE:9,
-                 CardType.TEN:10,
-                 CardType.JACK:10,
-                 CardType.QUEEN:10,
-                 CardType.KING:10}
+    __cardValueDict = {CardType.ACE:(1, 'A'),
+                       CardType.TWO:(2, '2'),
+                       CardType.THREE:(3, '3'),
+                       CardType.FOUR:(4, '4'),
+                       CardType.FIVE:(5, '5'),
+                       CardType.SIX:(6, '6'),
+                       CardType.SEVEN:(7, '7'),
+                       CardType.EIGHT:(8, '8'),
+                       CardType.NINE:(9, '9'),
+                       CardType.TEN:(10, '10'),
+                       CardType.JACK:(10, 'J'),
+                       CardType.QUEEN:(10, 'Q'),
+                       CardType.KING:(10, 'K')}
+
+    __suitIconDict = {SuitType.HEART: u"\u2665",
+                      SuitType.SPADE:u"\u2660",
+                      SuitType.DIAMOND:u"\u2666",
+                      SuitType.CLUB:u"\u2663"}
+
+
 
                 # default to ace of hearts
-    def __init__(self, type=CardType.ACE, suit=Suit.HEART):
+        # TOOD:  make sure we are indexing properly to collect all members from the dictionaries
+    def __init__(self, type=CardType.ACE, suit=SuitType.HEART):
         self.__type = type
-        self.__value = self.ValueDict[self.__type]
+        self.__value = self.__cardValueDict[self.__type][0]
+        self.__value_icon = self.__cardValueDict[self.__type][1]
         self.__suit = suit
+        self.__suit_icon = self.__suitIconDict[self.__suit]
         self.__face_state = CardFaceState.DOWN
 
     def set_face_state(self, new_state):
@@ -68,21 +84,10 @@ class Card():
     def get_card_suit(self):
         return self.__suit
 
-    def draw_card(selfs):
+    def draw_card(self):
         pass
 
 
-    def draw_club_card(value):
-        pass
-
-    def draw_heart_card(value):
-        pass
-
-    def draw_spade_card(value):
-        pass
-
-    def draw_diamond_card(value):
-        pass
 
 # end of the card class
 
@@ -95,7 +100,7 @@ class Deck():
 
     # this will populate the set of cards that make up the deck
     def generate_deck_cards(self):
-      for this_suit in Suit:
+      for this_suit in SuitType:
           for this_value in CardType:
              # print(f"{this_suit} of {this_value}")
               tempCard = Card(this_value, this_suit)
@@ -155,11 +160,13 @@ class Player():
 
 
 
-club_image = "C"
-diamond_image = "D"
-Heart_image = "H"
-Spade_image = "S"
 
 
-temp_card_str = "C\n  \n   \t\t\t {value}"\n\n
+
+
+
+
+
+
+
 
