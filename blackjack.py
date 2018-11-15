@@ -85,7 +85,16 @@ class Card():
         return self.__suit
 
     def draw_card(self):
-        pass
+        print("------------")
+        print(f"|{self.__suit_icon}        {self.__suit_icon}|")
+        print(f"|          |")
+        print(f"|          |")
+        print(f"|    {self.__value_icon}     |")
+        print(f"|          |")
+        print(f"|          |")
+        print(f"|{self.__suit_icon}        {self.__suit_icon}|")
+        print("------------")
+
 
 
 
@@ -156,6 +165,12 @@ class Player():
 
 
 # end of player class
+#tempCard = Card(CardType.ACE, SuitType.HEART)
+#tempCard = Card(CardType.JACK, SuitType.HEART)
+tempCard = Card(CardType.QUEEN, SuitType.HEART)
+#tempCard = Card(CardType.KING, SuitType.HEART)
+#tempCard = Card(CardType.TEN, SuitType.HEART)
+tempCard.draw_card()
 
 
 
