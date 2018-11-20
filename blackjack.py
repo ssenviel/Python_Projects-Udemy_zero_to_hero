@@ -64,13 +64,13 @@ class Card():
 
                 # default to ace of hearts
         # TOOD:  make sure we are indexing properly to collect all members from the dictionaries
-    def __init__(self, type=CardType.ACE, suit=SuitType.HEART):
+    def __init__(self, type=CardType.ACE, suit=SuitType.HEART, face=CardFaceState.UP):
         self.__type = type
         self.__value = self.__cardValueDict[self.__type][0]
         self.__value_icon = self.__cardValueDict[self.__type][1]
         self.__suit = suit
         self.__suit_icon = self.__suitIconDict[self.__suit]
-        self.__face_state = CardFaceState.DOWN
+        self.__face_state = face
 
     def set_face_state(self, new_state):
         self.__face_state = new_state
@@ -128,8 +128,11 @@ class Deck():
         return self.__cards
 
     # pops a card off the deck and returns the card
-    def deal_card(self):
-        return self.__cards.pop()
+    def deal_card(self, face=CardFaceState.UP):
+        newCard = self.__cards.pop()
+        newCard.set_face_state(face)
+              
+        return newCard
 
 
 # end of deck class
@@ -137,6 +140,9 @@ class Deck():
 
 # player class
 class Player():
+    
+    cardStrTopBottom = '------------'
+    carStrBuffer = '|          |'
     
     def __init__(self):
         self.__hand = list();
@@ -154,25 +160,19 @@ class Player():
         self.__hand_value = self.__calc_hand_value()
         return self.__hand_value
 
-
-
-
     def __calc_hand_value(self):
         value=0
         aces = list()
         for card in self.__hand:
             value += card.get_card_value()
             if(CardType.ACE == card.get_card_type()):
-                aces.append(card)
-              
-                
-        
+                aces.append(card)              
+   
         for ace_card in aces:
             # TODO: update this logic to support setting of the ace value to either 1 or 11
             if (value > 21):
                 value -= 10
                 
-            
         return value
     
     
@@ -180,10 +180,25 @@ class Player():
     
     # draw a players hand
     def display_hand(self):
-        pass;
-  
+        numCards = len(self.__hand)
+        
+        if(0 == numCards):
+            return;
+        
+        elif (1 == numCards):
+            self.__hand[0].draw_card()
+        
+        else:
         # print the top line
-                 
+            for cardIdx in range(0, numCards-1):
+                print(self.cardStrTopBottom, end='   ')
+                
+            print(self.cardStrTopBottom)
+                
+  
+        
+       
+        
 
         #print the second line: | suit icon , spaces, suit icon, |
       
@@ -206,7 +221,8 @@ class Player():
 
 
 
-# end of player class
+############## end of player class ###########################
+
 #tempCard = Card(CardType.ACE, SuitType.HEART)
 #tempCard = Card(CardType.JACK, SuitType.HEART)
 #tempCard = Card(CardType.QUEEN, SuitType.HEART)
@@ -220,9 +236,43 @@ class Player():
 
 
 
+def playBackJack():
+    pass
+    #  initialize the deck
+    
+    # create the dealer and the player
+    
+    # deal two cards the player - face up
 
-
-
+    # dealer deals two cards, face one face up, face down
+    
+    # display the dealer hand
+    
+    # display the player hand
+    
+     # prompt player to hit UNTL the player "stays" or is bust.
+        # Display the hand after each iteration
+        
+    # let dealer hit until bust or stay at soft hard 18
+    
+def debug_display_hand():
+    deck = Deck()
+    deck.generate_deck_cards()
+    deck.shuffle_cards()
+    
+    tempPlayer = Player()
+    tempPlayer.recieve_card(deck.deal_card())
+    tempPlayer.recieve_card(deck.deal_card())
+    tempPlayer.recieve_card(deck.deal_card())
+    tempPlayer.recieve_card(deck.deal_card())
+    tempPlayer.recieve_card(deck.deal_card())
+    
+    
+    Player
+    
+    
+    
+####################  
 
 
 

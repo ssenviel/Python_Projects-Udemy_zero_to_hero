@@ -15,7 +15,6 @@ class TestPlayer(unittest.TestCase):
 
     
     def test_card_draw(self):
-       # print("testing card draw")
         self.testPlayer.recieve_card( Card(CardType.ACE, SuitType.CLUB) )
         self.testPlayer.recieve_card( Card(CardType.ACE, SuitType.HEART) )
         testHand = self.testPlayer.get_hand()
@@ -47,6 +46,24 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual( len(self.testPlayer.get_hand() ) , 8, "incorrect number of cards")
      
         self.assertEqual(self.testPlayer.get_hand_value(), 12, "failed case2 -- all twos and aces")
+
+        
+    def test_hand_value_face_and_ace(self):
+        self.testPlayer.recieve_card( Card(CardType.JACK, SuitType.CLUB) )
+        self.testPlayer.recieve_card( Card(CardType.ACE, SuitType.HEART) )
+        
+        self.assertEqual( len(self.testPlayer.get_hand() ), 2, "mismatch on the number of cards")
+        self.assertEqual(self.testPlayer.get_hand_value(), 21, "error this should be a winning hand")
+          
+    def test_hand_value_two_face_cards_and_ace(self):
+        self.testPlayer.recieve_card( Card(CardType.JACK, SuitType.CLUB) )
+        self.testPlayer.recieve_card( Card(CardType.ACE, SuitType.HEART) )
+        self.testPlayer.recieve_card( Card(CardType.TEN, SuitType.SPADE) )
+        
+        self.assertEqual( len( self.testPlayer.get_hand() ), 3, "mismatch on the number of cards")
+        self.assertEqual( self.testPlayer.get_hand_value(), 21, "error this should be a winning hand")
+        
+         
 
 suite = unittest.TestLoader().loadTestsFromTestCase(TestPlayer)
 unittest.TextTestRunner(verbosity=verbosity_level).run(suite)
