@@ -137,21 +137,45 @@ class Deck():
 
 # player class
 class Player():
-    __hand = list()
-    __hand_value=0;
-
+    
     def __init__(self):
-        self.hand.clear()
+        self.__hand = list();
         self.__hand_value = 0;
         
     # add a card to the players hand,
     def recieve_card(self, new_card):
         self.__hand.append(new_card)
-      
-         
+        
+    def get_hand(self):
+        return self.__hand
+          
      # return the value of a player's hand
     def get_hand_value(self):
-        return self.__calc_hand_value()
+        self.__hand_value = self.__calc_hand_value()
+        return self.__hand_value
+
+
+
+
+    def __calc_hand_value(self):
+        value=0
+        aces = list()
+        for card in self.__hand:
+            value += card.get_card_value()
+            if(CardType.ACE == card.get_card_type()):
+                aces.append(card)
+              
+                
+        
+        for ace_card in aces:
+            # TODO: update this logic to support setting of the ace value to either 1 or 11
+            if (value > 21):
+                value -= 10
+                
+            
+        return value
+    
+    
     
     
     # draw a players hand
@@ -181,34 +205,14 @@ class Player():
             
 
 
-    def __calc_hand_value(self):
-        value=0
-        aces = list()
-        for card in self.__hand:
-            value += card.get_value()
-            if(CardType.ACE == card.get_card_type()):
-                aces.append(card)
-              
-                
-        
-        for ace_card in aces:
-            # TODO: update this logic to support setting of the ace value to either 1 or 11
-            if (value > 21):
-                value -= 10
-                
-            
-        self.__hand_value = value 
-    
-    
-
 
 # end of player class
-empCard = Card(CardType.ACE, SuitType.HEART)
+#tempCard = Card(CardType.ACE, SuitType.HEART)
 #tempCard = Card(CardType.JACK, SuitType.HEART)
-tempCard = Card(CardType.QUEEN, SuitType.HEART)
+#tempCard = Card(CardType.QUEEN, SuitType.HEART)
 #tempCard = Card(CardType.KING, SuitType.HEART)
 #tempCard = Card(CardType.TEN, SuitType.HEART)
-tempCard.draw_card()
+#tempCard.draw_card()
 
 
 
