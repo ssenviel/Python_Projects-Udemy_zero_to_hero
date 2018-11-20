@@ -41,7 +41,7 @@ class SuitType(enum.Enum):
 # card class
 class Card():
 
-    __cardValueDict = {CardType.ACE:(1, 'A'),
+    __cardValueDict = {CardType.ACE:(11, 'A'),
                        CardType.TWO:(2, '2'),
                        CardType.THREE:(3, '3'),
                        CardType.FOUR:(4, '4'),
@@ -84,6 +84,9 @@ class Card():
     def get_card_suit(self):
         return self.__suit
 
+    def get_card_type(self):
+        return self.__type
+
     def draw_card(self):
         print("------------")
         print(f"|{self.__suit_icon}        {self.__suit_icon}|")
@@ -95,7 +98,8 @@ class Card():
         print(f"|{self.__suit_icon}        {self.__suit_icon}|")
         print("------------")
 
-
+    def get_suit_icon(self):
+        return self.__suit_icon
 
 
 # end of the card class
@@ -138,34 +142,68 @@ class Player():
 
     def __init__(self):
         self.hand.clear()
-
+        self.__hand_value = 0;
+        
     # add a card to the players hand,
-    def recieve_card(self):
-        pass
-
-
-    # return the value of a player's hand
-    def hand_value(self):
-        pass
-
-    def draw_card(self):
-        pass
-
-
+    def recieve_card(self, new_card):
+        self.__hand.append(new_card)
+      
+         
+     # return the value of a player's hand
+    def get_hand_value(self):
+        return self.__calc_hand_value()
+    
+    
     # draw a players hand
     def display_hand(self):
-        pass
+        pass;
+  
+        # print the top line
+                 
+
+        #print the second line: | suit icon , spaces, suit icon, |
+      
+        
+        
+        
+        # print the third and 4th lines :  | , spaces, |
+
+
+        # print the 5th line:  | , spaces, card type, spaces, |
+        
+        # print the 6th, 7th lines:  |, spaces, |
+        
+        #print the 8th line:| suit icon , spaces, suit icon, |
+        
+        
+            
+         # print the last line
+            
+
 
     def __calc_hand_value(self):
-        pass
-
-    def get_hand_value(self):
-        pass
-
+        value=0
+        aces = list()
+        for card in self.__hand:
+            value += card.get_value()
+            if(CardType.ACE == card.get_card_type()):
+                aces.append(card)
+              
+                
+        
+        for ace_card in aces:
+            # TODO: update this logic to support setting of the ace value to either 1 or 11
+            if (value > 21):
+                value -= 10
+                
+            
+        self.__hand_value = value 
+    
+    
 
 
 # end of player class
-#tempCard = Card(CardType.ACE, SuitType.HEART)
+empCard = Card(CardType.ACE, SuitType.HEART)
 #tempCard = Card(CardType.JACK, SuitType.HEART)
 tempCard = Card(CardType.QUEEN, SuitType.HEART)
 #tempCard = Card(CardType.KING, SuitType.HEART)

@@ -12,11 +12,6 @@ class TestPlayer(unittest.TestCase):
     def tearDown(self):
         pass
 
-
-    def test_draw_card(self):
-        pass
-
-
     def test_hand_value(self):
         pass
 
