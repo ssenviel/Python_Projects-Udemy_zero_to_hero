@@ -88,20 +88,37 @@ class Card():
         return self.__type
 
     def draw_card(self):
-        print("------------")
-        print(f"|{self.__suit_icon}        {self.__suit_icon}|")
-        print(f"|          |")
-        print(f"|          |")
-        print(f"|    {self.__value_icon}     |")
-        print(f"|          |")
-        print(f"|          |")
-        print(f"|{self.__suit_icon}        {self.__suit_icon}|")
-        print("------------")
+        # TODO: add in logic for if card is face down
+        if(CardFaceState.UP == self.__face_state):
+            print("------------")
+            print(f"|{self.__suit_icon}        {self.__suit_icon}|")
+            print(f"|          |")
+            print(f"|          |")
+            print(f"|    {self.__value_icon}     |")
+            print(f"|          |")
+            print(f"|          |")
+            print(f"|{self.__suit_icon}        {self.__suit_icon}|")
+            print("------------")
+        
+        else:
+            print("------------")
+            print("|##########|")
+            print("|##########|")
+            print("|##########|")
+            print("|##########|")
+            print("|##########|")
+            print("|##########|")
+            print("|##########|")
+            print("------------")
+            
+            
 
     def get_suit_icon(self):
         return self.__suit_icon
 
-
+    def get_value_icon(self):
+        return self.__value_icon
+    
 # end of the card class
 
 # deck class
@@ -139,10 +156,13 @@ class Deck():
 
 
 # player class
+# TODO add docstrings
 class Player():
     
-    cardStrTopBottom = '------------'
-    carStrBuffer = '|          |'
+    cardStrTopBottom = '------------'  # TODO: refactor to cardVerticalBoundryStr
+    cardStrBuffer = '|          |'    # TODO: refactor to cardBufferStr
+    multiCardSeperatorStr = '   '      # TODO: refactor to multiCardSeporatorStr
+    faceDownCardStr = '|##########|'
     
     def __init__(self):
         self.__hand = list();
@@ -173,10 +193,45 @@ class Player():
             if (value > 21):
                 value -= 10
                 
-        return value
+        return value   
     
+    def __draw_hand_vertical_boundry(self, numCards):
+        for _ in range(0, numCards-1):
+            print(self.cardStrTopBottom, end=self.multiCardSeperatorStr)
+                
+        print(self.cardStrTopBottom)
+        
     
+    def __draw_hand_suit_icon(self, numCards):
+         
+        for cardIdx in range(0, numCards-1):
+                
+            if(CardFaceState.UP == self.__hand[cardIdx].get_card_face_state()):
+                print(f"|{self.__hand[cardIdx].get_suit_icon()}        {self.__hand[cardIdx].get_suit_icon()}|", end=self.multiCardSeperatorStr)
+            else:
+                print(self.faceDownCardStr, end=self.multiCardSeperatorStr)
+                    
+             # print the last card
+        if(CardFaceState.UP == self.__hand[numCards-1].get_card_face_state()):        
+            print(f"|{self.__hand[numCards-1].get_suit_icon()}        {self.__hand[numCards-1].get_suit_icon()}|")
+        else:
+            print(self.faceDownCardStr)
+              
     
+    def __draw__hand_card_buffer_region(self, numCards):
+        for _ in range(0,2):
+            for cardIdx in range(0, numCards-1):
+                if(CardFaceState.UP == self.__hand[cardIdx].get_card_face_state() ):
+                    print(self.cardStrBuffer, end=self.multiCardSeperatorStr)
+                else:
+                    print(self.faceDownCardStr, end=self.multiCardSeperatorStr)
+                
+                    #last card
+                if(CardFaceState.UP == self.__hand[numCards-1].get_card_face_state()):
+                    print(self.cardStrBuffer)
+                else:
+                    print(self.faceDownCardStr)    
+        
     
     # draw a players hand
     def display_hand(self):
@@ -191,33 +246,108 @@ class Player():
         else:
         # print the top line
             for cardIdx in range(0, numCards-1):
-                print(self.cardStrTopBottom, end='   ')
+                print(self.cardStrTopBottom, end=self.multiCardSeperatorStr)
                 
             print(self.cardStrTopBottom)
                 
-  
-        
-       
-        
-
+          
         #print the second line: | suit icon , spaces, suit icon, |
-      
-        
-        
-        
-        # print the third and 4th lines :  | , spaces, |
-
-
+            for cardIdx in range(0, numCards-1):
+                
+                if(CardFaceState.UP == self.__hand[cardIdx].get_card_face_state()):
+                    print(f"|{self.__hand[cardIdx].get_suit_icon()}        {self.__hand[cardIdx].get_suit_icon()}|", end=self.multiCardSeperatorStr)
+                else:
+                    print(self.faceDownCardStr, end=self.multiCardSeperatorStr)
+                    
+                    # print the last card
+            if(CardFaceState.UP == self.__hand[numCards-1].get_card_face_state()):        
+                print(f"|{self.__hand[numCards-1].get_suit_icon()}        {self.__hand[numCards-1].get_suit_icon()}|")
+            else:
+                print(self.faceDownCardStr)
+                
+        # print the 3rd and 4th lines :  | , spaces, |  
+            # 3RD line
+            for cardIdx in range(0, numCards-1):
+                if(CardFaceState.UP == self.__hand[cardIdx].get_card_face_state()):
+                    print(self.cardStrBuffer, end=self.multiCardSeperatorStr)
+                else:
+                    print(self.faceDownCardStr, end=self.multiCardSeperatorStr)
+              
+               # last card in the hand 
+            if(CardFaceState.UP == self.__hand[numCards-1].get_card_face_state()):
+                print(self.cardStrBuffer)
+            else:
+                print(self.faceDownCardStr)
+            
+            
+            # 4TH line
+            for cardIdx in range(0, numCards-1):
+                if(CardFaceState.UP == self.__hand[cardIdx].get_card_face_state()):
+                    print(self.cardStrBuffer, end=self.multiCardSeperatorStr)
+                else:
+                     print(self.faceDownCardStr, end=self.multiCardSeperatorStr)
+                     
+               # last card in the hand 
+            if(CardFaceState.UP == self.__hand[numCards-1].get_card_face_state()):
+                print(self.cardStrBuffer)
+            else:
+                print(self.faceDownCardStr)
+                    
+            
+            
+           
         # print the 5th line:  | , spaces, card type, spaces, |
-        
+            for cardIdx in range(0, numCards-1):
+                
+                if(CardFaceState.UP == self.__hand[cardIdx].get_card_face_state()):
+                    print("|    {:<2}    |".format(self.__hand[cardIdx].get_value_icon()), end=self.multiCardSeperatorStr)
+                else:
+                    print(self.faceDownCardStr, end=self.multiCardSeperatorStr)
+            
+             # last card
+            if(CardFaceState.UP == self.__hand[numCards-1].get_card_face_state()):
+                print("|    {:<2}    |".format(self.__hand[numCards-1].get_value_icon()) )
+            else:
+                print(self.faceDownCardStr)
+                
         # print the 6th, 7th lines:  |, spaces, |
-        
-        #print the 8th line:| suit icon , spaces, suit icon, |
-        
-        
             
+            for _ in range(0,2):
+                for cardIdx in range(0, numCards-1):
+                    if(CardFaceState.UP == self.__hand[cardIdx].get_card_face_state() ):
+                        print(self.cardStrBuffer, end=self.multiCardSeperatorStr)
+                    else:
+                        print(self.faceDownCardStr, end=self.multiCardSeperatorStr)
+                
+                    #last card
+                if(CardFaceState.UP == self.__hand[numCards-1].get_card_face_state()):
+                    print(self.cardStrBuffer)
+                else:
+                    print(self.faceDownCardStr)    
+        
+        
+        
+        #print the 8th line: | suit icon , spaces, suit icon, |
+            for cardIdx in range(0, numCards-1):
+                
+                if(CardFaceState.UP == self.__hand[cardIdx].get_card_face_state()):
+                    print(f"|{self.__hand[cardIdx].get_suit_icon()}        {self.__hand[cardIdx].get_suit_icon()}|", end=self.multiCardSeperatorStr)
+                else:
+                    print(self.faceDownCardStr, end=self.multiCardSeperatorStr)
+                    
+                    # print the last card
+            if(CardFaceState.UP == self.__hand[numCards-1].get_card_face_state()):        
+                print(f"|{self.__hand[numCards-1].get_suit_icon()}        {self.__hand[numCards-1].get_suit_icon()}|")
+            else:
+                print(self.faceDownCardStr)
+                           
          # print the last line
-            
+        # 
+            for cardIdx in range(0, numCards-1):
+                print(self.cardStrTopBottom, end=self.multiCardSeperatorStr)
+                
+            print(self.cardStrTopBottom)
+                            
 
 
 
@@ -250,7 +380,7 @@ def playBackJack():
     
     # display the player hand
     
-     # prompt player to hit UNTL the player "stays" or is bust.
+     # prompt player to hit UNTIL the player "stays" or is bust.
         # Display the hand after each iteration
         
     # let dealer hit until bust or stay at soft hard 18
@@ -261,18 +391,30 @@ def debug_display_hand():
     deck.shuffle_cards()
     
     tempPlayer = Player()
+    tempPlayer2 = Player()
+    
     tempPlayer.recieve_card(deck.deal_card())
     tempPlayer.recieve_card(deck.deal_card())
     tempPlayer.recieve_card(deck.deal_card())
     tempPlayer.recieve_card(deck.deal_card())
     tempPlayer.recieve_card(deck.deal_card())
     
+    tempPlayer2.recieve_card(deck.deal_card())
+    tempPlayer2.recieve_card(deck.deal_card(CardFaceState.DOWN))
+        
+        
+        
+    tempPlayer.display_hand()
     
-    Player
+    print()
+    
+    tempPlayer2.display_hand()
     
     
     
-####################  
+    
+#### main body ################  
+debug_display_hand()
 
 
 
