@@ -1,6 +1,6 @@
 import enum
 import random
-
+import time
 
 #club_image = u"\u2663"
 #diamond_image = u"\u2666"
@@ -64,8 +64,9 @@ class Card():
 
                 # default to ace of hearts
         # TOOD:  make sure we are indexing properly to collect all members from the dictionaries
-    def __init__(self, type=CardType.ACE, suit=SuitType.HEART, face=CardFaceState.UP):
-        self.__type = type
+        # TODO:  refactor references of card "type" to cardFaceType
+    def __init__(self, cardFaceType=CardType.ACE, suit=SuitType.HEART, face=CardFaceState.UP):
+        self.__type = cardFaceType
         self.__value = self.__cardValueDict[self.__type][0]
         self.__value_icon = self.__cardValueDict[self.__type][1]
         self.__suit = suit
@@ -278,7 +279,15 @@ class Player():
     def print_hand(self):
         for card in self.__hand:
             print("{} of {}".format(card.get_card_type(), card.get_card_suit()))
+     
+    def hand_contains_card_type(self, CardValue):
+         # return true if the card contains a specific card value type
+        for card in self.__hand:
+            if(CardValue == card.get_card_type() ):
+                return True
         
+        return False
+    
 ############## end of player class ###########################
 
 class Dealer(Player):
@@ -313,6 +322,27 @@ class Dealer(Player):
         self.__visible_hand_value = self.__calc_visible_hand_value()
         return self.__visible_hand_value
     
+    def show_card_faces(self):
+        for card in self.__hand:
+            card.set_face_state(CardFaceState.UP)
+            
+    def should_hit(self):
+      #conditions for if a dealer should hit
+            # 1. hand value is less <= 16
+            # 2. if a soft 17 (contains an ace)
+        
+        if(self.get_hand_value() < 17):
+            return True
+        elif(self.get_hand_value() == 17 and self.__hand_contains_card_type(CardType.ACE)):
+            return True
+        else:
+            return False
+        
+            
+            
+            
+#### Dealer class #####
+    
 #tempCard = Card(CardType.ACE, SuitType.HEART)
 #tempCard = Card(CardType.JACK, SuitType.HEART)
 #tempCard = Card(CardType.QUEEN, SuitType.HEART)
@@ -324,11 +354,24 @@ class Dealer(Player):
 
 
 
+VALID_PLAYER_ACTION = ("stay", "hit")
+BLACKJACK_BUST_VALUE=21;
+
+def validPlayerAction(playerInput):
+    
+    valid = False
+    
+    for validInput in VALID_PLAYER_ACTION:
+        if (playerInput == validInput):
+            valid = True
+            break
+             
+    return valid
 
 
 def playBackJack():
-    
-    VALID_PLAYER_ACTION = ("stay", "hit")
+        
+    playerActionInput = str()
     
     #  initialize the deck
     gameDeck = Deck()
@@ -348,27 +391,72 @@ def playBackJack():
     dealer.recieve_card(gameDeck.deal_card(CardFaceState.DOWN))
     
     # display the dealer hand and the its visible value
-    dealer.display_hand()
     print("dealer is showing {}".format(dealer.get_visible_hand_value()))
+    dealer.display_hand()
     
     # display the player hand and its value
+    print("you have {}".format(player.get_hand_value()))
     player.display_hand()
-    #print("you have {}".format(player.get_hand_value()))
     
      # prompt player to hit UNTIL the player "stays" or is bust.
-    ##playerAction = str()
-    ##while(player action != stay)
-        #validAction = False
-        # while( not validAction)
-       
-            # prompt for input
-                
-        # if player action  = hit --> deal card, print hand and value 
+    
+    while(playerActionInput != "stay"):
         
-        # Display the hand after each iteration
+        
+        validAction = False
+        while( not validAction):
+            playerActionInput = input("do you want to hit or stay").lower()
+            validAction = validPlayerAction(playerActionInput)
+      
+        # if player action  = hit --> deal card, print hand and value      
+        if(validAction and playerActionInput == "hit"):
+            player.deal_card(gameDeck.deal_card())
+    
+            print("dealer is showing {}".format(dealer.get_visible_hand_value()))
+            dealer.display_hand()
+            
+            print("you have {}".format(player.get_hand_value()))
+            player.display_hand()
+    
+        if(player.get_hand_value() > BLACKJACK_BUST_VALUE):
+            print("PLAYER HAS BUSTED -- HOUSE WINS!!")
+            exit(0)
+                 
+       
+        
+        
         
     # let dealer hit until bust or stay at soft hard 18
+    print("showing the dealers' hand")
+    dealer.show_card_faces()
+    time.sleep(5)
     
+    print("dealer is showing {}".format(dealer.get_hand_value()))
+    dealer.display_hand()
+     
+    print("you have {}".format(player.get_hand_value()))
+    player.display_hand()
+           
+    while(dealer.should_hit()):
+        dealer.recieve_card(gameDeck.deal_card())
+    
+    
+    print("dealer has {}".format(dealer.get_hand_value()))
+    print("plaeyer has {}".format(player.get_hand_value()))
+    
+    # final game winner logic
+    if(dealer.get_hand_value() > BLACKJACK_BUST_VALUE):
+        print("DEALER HAS BUSTED -- PLAYER WINS!!".format(dealer.get_hand_value()))
+    
+    elif(player.get_hand_value() <= dealer.get_hand_value()):
+        print("DEALER HAS HIGHER HAND -- HOUSE WINS!!")
+    else:
+        print("PLAYER HAS HIGHER HAND -- CONGRATULATIONS, PLAYER WINS!!")
+        
+        
+    ### end play black jack function    
+        
+        
 def debug_display_hand():
     deck = Deck()
     deck.generate_deck_cards()
@@ -399,7 +487,12 @@ def debug_display_hand():
     
     
 #### main body ################  
-debug_display_hand()
+'''
+  TOOD 1: refactor  CardType enum to CardFaceType
+  TODO 2: debug the logic for the playBlackjack function
+  TODO 3:   
+     
+'''
 
 
 
