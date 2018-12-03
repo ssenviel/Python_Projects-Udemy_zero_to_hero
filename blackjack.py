@@ -170,6 +170,7 @@ class Player():
         self.__hand_value = 0;
         
     # add a card to the players hand,
+    # TODO: refactor to fix typo in "receive"
     def recieve_card(self, new_card):
         self.__hand.append(new_card)
         
@@ -302,7 +303,7 @@ class Dealer(Player):
         visible_value=0
         aces = list()
         
-        for card in self.__hand:
+        for card in self._Player__hand:
             if(CardFaceState.DOWN == card.get_card_face_state()):
                 continue
             else:
@@ -323,17 +324,20 @@ class Dealer(Player):
         return self.__visible_hand_value
     
     def show_card_faces(self):
-        for card in self.__hand:
+        for card in self._Player__hand:
             card.set_face_state(CardFaceState.UP)
             
-    def should_hit(self):
+    def should_hit(self, debug=False):
       #conditions for if a dealer should hit
             # 1. hand value is less <= 16
             # 2. if a soft 17 (contains an ace)
+        value = self.get_hand_value()
+        if(debug):
+            print("DEBUG -- dealer hand value is {}".format(value))
         
-        if(self.get_hand_value() < 17):
+        if(value < self.HARD_STAY-1):
             return True
-        elif(self.get_hand_value() == 17 and self.__hand_contains_card_type(CardType.ACE)):
+        elif(value == self.HARD_STAY-1 and self.hand_contains_card_type(CardType.ACE)):
             return True
         else:
             return False
@@ -393,6 +397,7 @@ def playBackJack():
     # display the dealer hand and the its visible value
     print("dealer is showing {}".format(dealer.get_visible_hand_value()))
     dealer.display_hand()
+    print()
     
     # display the player hand and its value
     print("you have {}".format(player.get_hand_value()))
@@ -405,18 +410,20 @@ def playBackJack():
         
         validAction = False
         while( not validAction):
-            playerActionInput = input("do you want to hit or stay").lower()
+            playerActionInput = input("do you want to hit or stay\n").lower()
             validAction = validPlayerAction(playerActionInput)
       
         # if player action  = hit --> deal card, print hand and value      
         if(validAction and playerActionInput == "hit"):
-            player.deal_card(gameDeck.deal_card())
+            player.recieve_card( gameDeck.deal_card() )
     
             print("dealer is showing {}".format(dealer.get_visible_hand_value()))
             dealer.display_hand()
+            print()
             
             print("you have {}".format(player.get_hand_value()))
             player.display_hand()
+            print()
     
         if(player.get_hand_value() > BLACKJACK_BUST_VALUE):
             print("PLAYER HAS BUSTED -- HOUSE WINS!!")
@@ -429,20 +436,24 @@ def playBackJack():
     # let dealer hit until bust or stay at soft hard 18
     print("showing the dealers' hand")
     dealer.show_card_faces()
-    time.sleep(5)
+    time.sleep(3)
     
     print("dealer is showing {}".format(dealer.get_hand_value()))
     dealer.display_hand()
-     
+    print()
+    
     print("you have {}".format(player.get_hand_value()))
     player.display_hand()
+    print()
            
     while(dealer.should_hit()):
+        print("dealer is drawing a card")
         dealer.recieve_card(gameDeck.deal_card())
-    
+        dealer.display_hand()
+        time.sleep(1)
     
     print("dealer has {}".format(dealer.get_hand_value()))
-    print("plaeyer has {}".format(player.get_hand_value()))
+    print("player has {}".format(player.get_hand_value()))
     
     # final game winner logic
     if(dealer.get_hand_value() > BLACKJACK_BUST_VALUE):
@@ -490,9 +501,12 @@ def debug_display_hand():
 '''
   TOOD 1: refactor  CardType enum to CardFaceType
   TODO 2: debug the logic for the playBlackjack function
-  TODO 3:   
+  TODO 3: fine tune the console output
+  TODO: run pyLint
+  TODO: doc string every class and method
      
 '''
+playBackJack()
 
 
 
