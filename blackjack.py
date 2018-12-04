@@ -2,6 +2,7 @@ import enum
 import random
 import time
 
+
 #club_image = u"\u2663"
 #diamond_image = u"\u2666"
 #heart_image = u"\u2665"
@@ -359,7 +360,8 @@ class Dealer(Player):
 
 
 VALID_PLAYER_ACTION = ("stay", "hit")
-BLACKJACK_BUST_VALUE=21;
+BLACKJACK_VALUE=21;
+SCREEN_CLEAR = '\n'*50
 
 def validPlayerAction(playerInput):
     
@@ -403,7 +405,8 @@ def playBackJack():
     print("you have {}".format(player.get_hand_value()))
     player.display_hand()
     
-     # prompt player to hit UNTIL the player "stays" or is bust.
+    # prompt player to hit UNTIL the player "stays" or is bust.
+    # if the player has blackjack then skip this part
     
     while(playerActionInput != "stay"):
         
@@ -425,7 +428,7 @@ def playBackJack():
             player.display_hand()
             print()
     
-        if(player.get_hand_value() > BLACKJACK_BUST_VALUE):
+        if(player.get_hand_value() > BLACKJACK_VALUE):
             print("PLAYER HAS BUSTED -- HOUSE WINS!!")
             exit(0)
                  
@@ -434,9 +437,9 @@ def playBackJack():
         
         
     # let dealer hit until bust or stay at soft hard 18
+    print(SCREEN_CLEAR)
     print("showing the dealers' hand")
     dealer.show_card_faces()
-    time.sleep(3)
     
     print("dealer is showing {}".format(dealer.get_hand_value()))
     dealer.display_hand()
@@ -445,18 +448,22 @@ def playBackJack():
     print("you have {}".format(player.get_hand_value()))
     player.display_hand()
     print()
+    time.sleep(4)
            
     while(dealer.should_hit()):
+        print(SCREEN_CLEAR)
         print("dealer is drawing a card")
         dealer.recieve_card(gameDeck.deal_card())
+        
+        time.sleep(2)
         dealer.display_hand()
-        time.sleep(1)
-    
+        print()
+        player.display_hand()
     print("dealer has {}".format(dealer.get_hand_value()))
     print("player has {}".format(player.get_hand_value()))
     
     # final game winner logic
-    if(dealer.get_hand_value() > BLACKJACK_BUST_VALUE):
+    if(dealer.get_hand_value() > BLACKJACK_VALUE or dealer.get_hand_value() == BLACKJACK_VALUE):
         print("DEALER HAS BUSTED -- PLAYER WINS!!".format(dealer.get_hand_value()))
     
     elif(player.get_hand_value() <= dealer.get_hand_value()):
