@@ -420,6 +420,7 @@ def playBackJack():
         if(validAction and playerActionInput == "hit"):
             player.recieve_card( gameDeck.deal_card() )
     
+            print(SCREEN_CLEAR)
             print("dealer is showing {}".format(dealer.get_visible_hand_value()))
             dealer.display_hand()
             print()
@@ -459,21 +460,32 @@ def playBackJack():
         dealer.display_hand()
         print()
         player.display_hand()
-    print("dealer has {}".format(dealer.get_hand_value()))
-    print("player has {}".format(player.get_hand_value()))
-    
     # final game winner logic
-    if(dealer.get_hand_value() > BLACKJACK_VALUE or dealer.get_hand_value() == BLACKJACK_VALUE):
-        print("DEALER HAS BUSTED -- PLAYER WINS!!".format(dealer.get_hand_value()))
-    
-    elif(player.get_hand_value() <= dealer.get_hand_value()):
-        print("DEALER HAS HIGHER HAND -- HOUSE WINS!!")
-    else:
-        print("PLAYER HAS HIGHER HAND -- CONGRATULATIONS, PLAYER WINS!!")
+        game_winner = determine_blackjack_winner(player, dealer)
         
         
     ### end play black jack function    
-        
+
+def determine_blackjack_winner(player, dealer):
+    playerValue = player.get_hand_value()
+    dealerValue = dealer.get_hand_value()
+    print("dealer has {}".format(dealerValue))
+    print("player has {}".format(playerValue))
+    
+    if(BLACKJACK_VALUE == dealerValue == playerValue ):
+        winner  = None
+        print("PUSH -- no one wins")
+    elif(dealerValue > BLACKJACK_VALUE):
+        winner  = player
+        print("DEALER HAS BUSTED -- PLAYER WINS!!".format(dealer.get_hand_value()))
+    elif(player.get_hand_value() <= dealer.get_hand_value()):
+        winner = dealer
+        print("DEALER HAS HIGHER HAND -- HOUSE WINS!!")
+    else:
+        winner = player
+        print("PLAYER HAS HIGHER HAND -- CONGRATULATIONS, PLAYER WINS!!")
+    
+    return winner    
         
 def debug_display_hand():
     deck = Deck()
