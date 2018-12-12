@@ -469,16 +469,19 @@ def playBackJack():
 def determine_blackjack_winner(player, dealer):
     playerValue = player.get_hand_value()
     dealerValue = dealer.get_hand_value()
-    print("dealer has {}".format(dealerValue))
+    print("\ndealer has {}".format(dealerValue))
     print("player has {}".format(playerValue))
     
-    if(BLACKJACK_VALUE == dealerValue == playerValue ):
+    if(dealerValue == playerValue ):
         winner  = None
         print("PUSH -- no one wins")
+    elif(playerValue > BLACKJACK_VALUE):
+        winner = dealer
+        print("PLAYER has BUSTED -- DEALER WINS!!")    
     elif(dealerValue > BLACKJACK_VALUE):
         winner  = player
-        print("DEALER HAS BUSTED -- PLAYER WINS!!".format(dealer.get_hand_value()))
-    elif(player.get_hand_value() <= dealer.get_hand_value()):
+        print("DEALER HAS BUSTED -- PLAYER WINS!!")
+    elif(playerValue <= dealerValue):
         winner = dealer
         print("DEALER HAS HIGHER HAND -- HOUSE WINS!!")
     else:
@@ -525,7 +528,7 @@ def debug_display_hand():
   TODO: doc string every class and method
      
 '''
-playBackJack()
+#playBackJack()
 
 
 
