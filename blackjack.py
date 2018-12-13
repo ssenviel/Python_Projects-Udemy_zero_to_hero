@@ -15,7 +15,7 @@ class CardFaceState(enum.Enum):
 
 
 
-class CardType(enum.Enum):
+class CardFaceType(enum.Enum):
     ACE = enum.auto()
     TWO = enum.auto()
     THREE = enum.auto()
@@ -42,19 +42,19 @@ class SuitType(enum.Enum):
 # card class
 class Card():
 
-    __cardValueDict = {CardType.ACE:(11, 'A'),
-                       CardType.TWO:(2, '2'),
-                       CardType.THREE:(3, '3'),
-                       CardType.FOUR:(4, '4'),
-                       CardType.FIVE:(5, '5'),
-                       CardType.SIX:(6, '6'),
-                       CardType.SEVEN:(7, '7'),
-                       CardType.EIGHT:(8, '8'),
-                       CardType.NINE:(9, '9'),
-                       CardType.TEN:(10, '10'),
-                       CardType.JACK:(10, 'J'),
-                       CardType.QUEEN:(10, 'Q'),
-                       CardType.KING:(10, 'K')}
+    __cardValueDict = {CardFaceType.ACE:(11, 'A'),
+                       CardFaceType.TWO:(2, '2'),
+                       CardFaceType.THREE:(3, '3'),
+                       CardFaceType.FOUR:(4, '4'),
+                       CardFaceType.FIVE:(5, '5'),
+                       CardFaceType.SIX:(6, '6'),
+                       CardFaceType.SEVEN:(7, '7'),
+                       CardFaceType.EIGHT:(8, '8'),
+                       CardFaceType.NINE:(9, '9'),
+                       CardFaceType.TEN:(10, '10'),
+                       CardFaceType.JACK:(10, 'J'),
+                       CardFaceType.QUEEN:(10, 'Q'),
+                       CardFaceType.KING:(10, 'K')}
 
     __suitIconDict = {SuitType.HEART: u"\u2665",
                       SuitType.SPADE:u"\u2660",
@@ -66,7 +66,7 @@ class Card():
                 # default to ace of hearts
         # TOOD:  make sure we are indexing properly to collect all members from the dictionaries
         # TODO:  refactor references of card "type" to cardFaceType
-    def __init__(self, cardFaceType=CardType.ACE, suit=SuitType.HEART, face=CardFaceState.UP):
+    def __init__(self, cardFaceType=CardFaceType.ACE, suit=SuitType.HEART, face=CardFaceState.UP):
         self.__type = cardFaceType
         self.__value = self.__cardValueDict[self.__type][0]
         self.__value_icon = self.__cardValueDict[self.__type][1]
@@ -133,7 +133,7 @@ class Deck():
     # this will populate the set of cards that make up the deck
     def generate_deck_cards(self):
         for this_suit in SuitType:
-            for this_value in CardType:
+            for this_value in CardFaceType:
              # print(f"{this_suit} of {this_value}")
                 tempCard = Card(this_value, this_suit)
                 self.__cards.append(tempCard)
@@ -188,7 +188,7 @@ class Player():
         aces = list()
         for card in self.__hand:
             value += card.get_card_value()
-            if(CardType.ACE == card.get_card_type()):
+            if(CardFaceType.ACE == card.get_card_type()):
                 aces.append(card)              
    
         for ace_card in aces:
@@ -309,7 +309,7 @@ class Dealer(Player):
                 continue
             else:
                 visible_value += card.get_card_value()
-                if(CardType.ACE == card.get_card_type()):
+                if(CardFaceType.ACE == card.get_card_type()):
                     aces.append(card)  
             
         for ace_card in aces:
@@ -338,7 +338,7 @@ class Dealer(Player):
         
         if(value < self.HARD_STAY-1):
             return True
-        elif(value == self.HARD_STAY-1 and self.hand_contains_card_type(CardType.ACE)):
+        elif(value == self.HARD_STAY-1 and self.hand_contains_card_type(CardFaceType.ACE)):
             return True
         else:
             return False
@@ -348,11 +348,11 @@ class Dealer(Player):
             
 #### Dealer class #####
     
-#tempCard = Card(CardType.ACE, SuitType.HEART)
-#tempCard = Card(CardType.JACK, SuitType.HEART)
-#tempCard = Card(CardType.QUEEN, SuitType.HEART)
-#tempCard = Card(CardType.KING, SuitType.HEART)
-#tempCard = Card(CardType.TEN, SuitType.HEART)
+#tempCard = Card(CardFaceType.ACE, SuitType.HEART)
+#tempCard = Card(CardFaceType.JACK, SuitType.HEART)
+#tempCard = Card(CardFaceType.QUEEN, SuitType.HEART)
+#tempCard = Card(CardFaceType.KING, SuitType.HEART)
+#tempCard = Card(CardFaceType.TEN, SuitType.HEART)
 #tempCard.draw_card()
 
 
@@ -361,7 +361,7 @@ class Dealer(Player):
 
 VALID_PLAYER_ACTION = ("stay", "hit")
 BLACKJACK_VALUE=21;
-SCREEN_CLEAR = '\n'*50
+SCREEN_CLEAR = '\n'*30
 
 def validPlayerAction(playerInput):
     
@@ -413,7 +413,7 @@ def playBackJack():
         
         validAction = False
         while( not validAction):
-            playerActionInput = input("do you want to hit or stay\n").lower()
+            playerActionInput = input("do you want to hit or stay?\n").lower()
             validAction = validPlayerAction(playerActionInput)
       
         # if player action  = hit --> deal card, print hand and value      
@@ -460,8 +460,9 @@ def playBackJack():
         dealer.display_hand()
         print()
         player.display_hand()
+   
     # final game winner logic
-        game_winner = determine_blackjack_winner(player, dealer)
+    game_winner = determine_blackjack_winner(player, dealer)
         
         
     ### end play black jack function    
@@ -521,15 +522,16 @@ def debug_display_hand():
     
 #### main body ################  
 '''
-  TOOD 1: refactor  CardType enum to CardFaceType
-  TODO 2: debug the logic for the playBlackjack function
+  
+  
   TODO 3: fine tune the console output
-  TODO: run pyLint
-  TODO: doc string every class and method
+      3.1 look into using the Curses Library to perform a clear screen
+  TODO 4: run pyLint
+  TODO 5: doc string every class and method
      
 '''
-#playBackJack()
-
+playBackJack()
+exit(0)
 
 
 

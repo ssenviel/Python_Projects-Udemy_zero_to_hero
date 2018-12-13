@@ -1,7 +1,7 @@
 import unittest
 #from blackjack import Card, Suit, Value, CardFaceState
 #import blackjack
-from blackjack import SuitType, CardType, CardFaceState, Card
+from blackjack import SuitType, CardFaceType, CardFaceState, Card
 
 verbosity_level=2;
 
@@ -9,7 +9,7 @@ class TestCard(unittest.TestCase):
 
     def setUp(self):
         print("running setup")
-        self.myTestCard = Card(CardType.EIGHT, SuitType.SPADE)
+        self.myTestCard = Card(CardFaceType.EIGHT, SuitType.SPADE)
 
     def tearDown(self):
         print("performing teardown")
