@@ -1,4 +1,5 @@
 import enum
+import os
 import random
 import time
 
@@ -7,8 +8,6 @@ import time
 #diamond_image = u"\u2666"
 #heart_image = u"\u2665"
 #spade_image = u"\u2660"
-
-
 class CardFaceState(enum.Enum):
     DOWN = 0
     UP = 1
@@ -19,16 +18,16 @@ class CardFaceType(enum.Enum):
     ACE = enum.auto()
     TWO = enum.auto()
     THREE = enum.auto()
-    FOUR =  enum.auto()
-    FIVE =  enum.auto()
-    SIX  =  enum.auto()
-    SEVEN =  enum.auto()
-    EIGHT =  enum.auto()
-    NINE =  enum.auto()
-    TEN =  enum.auto()
-    JACK =  enum.auto()
-    QUEEN =  enum.auto()
-    KING =  enum.auto()
+    FOUR = enum.auto()
+    FIVE = enum.auto()
+    SIX = enum.auto()
+    SEVEN = enum.auto()
+    EIGHT = enum.auto()
+    NINE = enum.auto()
+    TEN = enum.auto()
+    JACK = enum.auto()
+    QUEEN = enum.auto()
+    KING = enum.auto()
 
 
 
@@ -62,10 +61,6 @@ class Card():
                       SuitType.CLUB:u"\u2663"}
 
 
-
-                # default to ace of hearts
-        # TOOD:  make sure we are indexing properly to collect all members from the dictionaries
-        # TODO:  refactor references of card "type" to cardFaceType
     def __init__(self, cardFaceType=CardFaceType.ACE, suit=SuitType.HEART, face=CardFaceState.UP):
         self.__type = cardFaceType
         self.__value = self.__cardValueDict[self.__type][0]
@@ -90,8 +85,8 @@ class Card():
         return self.__type
 
     def draw_card(self):
-        # TODO: add in logic for if card is face down
-        if(CardFaceState.UP == self.__face_state):
+
+        if CardFaceState.UP == self.__face_state:
             print("------------")
             print(f"|{self.__suit_icon}        {self.__suit_icon}|")
             print(f"|          |")
@@ -101,7 +96,6 @@ class Card():
             print(f"|          |")
             print(f"|{self.__suit_icon}        {self.__suit_icon}|")
             print("------------")
-        
         else:
             print("------------")
             print("|##########|")
@@ -112,16 +106,12 @@ class Card():
             print("|##########|")
             print("|##########|")
             print("------------")
-            
-            
 
     def get_suit_icon(self):
         return self.__suit_icon
 
     def get_value_icon(self):
         return self.__value_icon
-    
-# end of the card class
 
 # deck class
 class Deck():
@@ -150,7 +140,6 @@ class Deck():
     def deal_card(self, face=CardFaceState.UP):
         newCard = self.__cards.pop()
         newCard.set_face_state(face)
-              
         return newCard
 
 
@@ -158,79 +147,76 @@ class Deck():
 
 
 # player class
-# TODO add docstrings
+
 class Player():
-    
-    cardStrTopBottom = '------------'  # TODO: refactor to cardVerticalBoundryStr
-    cardStrBuffer = '|          |'    # TODO: refactor to cardBufferStr
-    multiCardSeperatorStr = '   '      # TODO: refactor to multiCardSeporatorStr
+    """
+    this class implement a player class. this abstracts the operations a player takes during the
+    course of a game of blackjack
+    """
+    cardVerticalBoundryStr = '------------'
+    cardBufferStr = '|          |'
+    multiCardSeperatorStr = '   '
     faceDownCardStr = '|##########|'
-    
+
     def __init__(self):
-        self.__hand = list();
-        self.__hand_value = 0;
-        
+        self.__hand = list()
+        self.__hand_value = 0
+
     # add a card to the players hand,
-    # TODO: refactor to fix typo in "receive"
     def recieve_card(self, new_card):
         self.__hand.append(new_card)
-        
+
     def get_hand(self):
         return self.__hand
-          
+
      # return the value of a player's hand
     def get_hand_value(self):
         self.__hand_value = self.__calc_hand_value()
         return self.__hand_value
 
     def __calc_hand_value(self):
-        value=0
+        value = 0
         aces = list()
         for card in self.__hand:
             value += card.get_card_value()
-            if(CardFaceType.ACE == card.get_card_type()):
-                aces.append(card)              
-   
+            if CardFaceType.ACE == card.get_card_type():
+                aces.append(card)
+
         for ace_card in aces:
-            # TODO: update this logic to support setting of the ace value to either 1 or 11
-            if (value > 21):
+
+            if value > 21:
                 value -= 10
-                
-        return value   
-    
+        return value
+
     def __draw_hand_vertical_boundry(self, numCards):
         for _ in range(0, numCards-1):
-            print(self.cardStrTopBottom, end=self.multiCardSeperatorStr)
-                
-        print(self.cardStrTopBottom)
-         
+            print(self.cardVerticalBoundryStr, end=self.multiCardSeperatorStr)
+        print(self.cardVerticalBoundryStr)
+
     def __draw_hand_suit_icon(self, numCards):
-         
         for cardIdx in range(0, numCards-1):
-                
-            if(CardFaceState.UP == self.__hand[cardIdx].get_card_face_state()):
+            if CardFaceState.UP == self.__hand[cardIdx].get_card_face_state():
                 print(f"|{self.__hand[cardIdx].get_suit_icon()}        {self.__hand[cardIdx].get_suit_icon()}|", end=self.multiCardSeperatorStr)
             else:
                 print(self.faceDownCardStr, end=self.multiCardSeperatorStr)
-                    
+
              # print the last card
-        if(CardFaceState.UP == self.__hand[numCards-1].get_card_face_state()):        
+        if CardFaceState.UP == self.__hand[numCards-1].get_card_face_state():
             print(f"|{self.__hand[numCards-1].get_suit_icon()}        {self.__hand[numCards-1].get_suit_icon()}|")
         else:
             print(self.faceDownCardStr)
-              
-    
+
     def __draw_hand_card_buffer_region(self, numCards):
-        for _ in range(0,2):
+        for _ in range(0, 2):
             for cardIdx in range(0, numCards-1):
-                if(CardFaceState.UP == self.__hand[cardIdx].get_card_face_state() ):
-                    print(self.cardStrBuffer, end=self.multiCardSeperatorStr)
+                if CardFaceState.UP == self.__hand[cardIdx].get_card_face_state():
+                    print(self.cardBufferStr, end=self.multiCardSeperatorStr)
                 else:
                     print(self.faceDownCardStr, end=self.multiCardSeperatorStr)
                 
                     #last card
             if(CardFaceState.UP == self.__hand[numCards-1].get_card_face_state()):
-                print(self.cardStrBuffer)
+                print(self.cardBufferStr)
             else:
                 print(self.faceDownCardStr)    
         
@@ -313,8 +299,7 @@ class Dealer(Player):
                     aces.append(card)  
             
         for ace_card in aces:
-            # TODO: update this logic to support setting of the ace value to either 1 or 11
-            if (visible_value > 21):
+             if (visible_value > 21):
                 visible_value -= 10
     
         return visible_value
@@ -420,7 +405,8 @@ def playBackJack():
         if(validAction and playerActionInput == "hit"):
             player.recieve_card( gameDeck.deal_card() )
     
-            print(SCREEN_CLEAR)
+            clear_screen()
+            
             print("dealer is showing {}".format(dealer.get_visible_hand_value()))
             dealer.display_hand()
             print()
@@ -438,8 +424,8 @@ def playBackJack():
         
         
     # let dealer hit until bust or stay at soft hard 18
-    print(SCREEN_CLEAR)
-    print("showing the dealers' hand")
+    clear_screen()
+    print("showing the dealers' hand\n")
     dealer.show_card_faces()
     
     print("dealer is showing {}".format(dealer.get_hand_value()))
@@ -452,11 +438,11 @@ def playBackJack():
     time.sleep(4)
            
     while(dealer.should_hit()):
-        print(SCREEN_CLEAR)
+        clear_screen()
         print("dealer is drawing a card")
-        dealer.recieve_card(gameDeck.deal_card())
-        
         time.sleep(2)
+        dealer.recieve_card(gameDeck.deal_card())
+                
         dealer.display_hand()
         print()
         player.display_hand()
@@ -490,7 +476,17 @@ def determine_blackjack_winner(player, dealer):
         print("PLAYER HAS HIGHER HAND -- CONGRATULATIONS, PLAYER WINS!!")
     
     return winner    
-        
+
+def clear_screen():
+#     print(SCREEN_CLEAR)
+
+    if os.name == 'nt':
+#         print("\nWindows\n\n")
+        _= os.system('cls')
+    else:
+        _= os.system('clear')
+    
+    
 def debug_display_hand():
     deck = Deck()
     deck.generate_deck_cards()
@@ -525,7 +521,7 @@ def debug_display_hand():
   
   
   TODO 3: fine tune the console output
-      3.1 look into using the Curses Library to perform a clear screen
+     
   TODO 4: run pyLint
   TODO 5: doc string every class and method
      
