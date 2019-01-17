@@ -30,9 +30,14 @@ def random_generator(N, start, stop):
         yield random.randrange(start, stop)
         i += 1
         
-def convert_str_to_iter(string):
-    pass
-
+def convert_str_to_iter():
+    my_string = 'hello'
+    my_str_iter = iter(my_string)
+    for char in range(0, len(my_string)):
+        print(next(my_str_iter))
+        
+        
+convert_str_to_iter()
 
         
         
