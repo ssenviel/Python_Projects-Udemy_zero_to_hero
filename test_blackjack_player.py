@@ -1,5 +1,7 @@
 import unittest
+
 from blackjack import Player, Card, CardFaceType, SuitType
+
 
 verbosity_level=2
 

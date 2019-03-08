@@ -1,8 +1,10 @@
 import unittest
-#from blackjack import Card, Suit, Value, CardFaceState
-#import blackjack
+
 from blackjack import SuitType, CardFaceType, CardFaceState, Card
 
+
+#from blackjack import Card, Suit, Value, CardFaceState
+#import blackjack
 verbosity_level=2;
 
 class TestCard(unittest.TestCase):

@@ -2,12 +2,10 @@
 import math
 
 
-
 # udemy course homework assignments:
 #
 #1.  fill in the line class methods to accept coordinates as a pair of tuples and return the slope
     # and distance of the line
-
 class Line:
 
     def __init__(self, coor1, coor2):

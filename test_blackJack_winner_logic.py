@@ -4,8 +4,9 @@ Created on Dec 7, 2018
 @author: senvi
 '''
 import unittest
-import blackjack
+
 from blackjack import Player, Dealer, Card, CardFaceState, CardFaceType, SuitType 
+import blackjack
 
 
 class TestBlackWinnerLogic(unittest.TestCase):

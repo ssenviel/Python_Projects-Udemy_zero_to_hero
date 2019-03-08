@@ -1,5 +1,7 @@
 import unittest
+
 from blackjack import Deck, Card
+
 
 verbosity_level = 2;
 

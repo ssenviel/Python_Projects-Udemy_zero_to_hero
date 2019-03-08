@@ -4,7 +4,9 @@ Created on Nov 27, 2018
 @author: senvi
 '''
 import unittest
+
 from blackjack import Dealer, Card, CardFaceType, SuitType, CardFaceState
+
 
 class TestDealer(unittest.TestCase):
 
