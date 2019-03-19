@@ -9,10 +9,14 @@ import time
 from Card import Card, CardFaceState, CardFaceType, SuitType
 
 
+VALID_PLAYER_ACTION = ("stay", "hit")
+BLACKJACK_VALUE = 21
+SCREEN_CLEAR = '\n'*30
+STARTING_DEFAULT_HOLDINGS = 100
 
 
 # deck class
-class Deck():
+class BlackJackDeck():
     """
     this class implements the Deck class
     Members:
@@ -74,8 +78,13 @@ class Player():
     def __init__(self):
         self.__hand = list()
         self.__hand_value = 0
+    
+    def clear_hand(self):
+        """
+            empty the hand of a player
+        """
+        self.__hand.clear();
 
-# add a card to the players hand,
     def recieve_card(self, new_card):
         """ add a card to the players hand """
         self.__hand.append(new_card)
@@ -102,6 +111,7 @@ class Player():
         for ace_card in aces:
             if value > 21:
                 value -= 10
+        
         return value
 
     def __draw_hand_vertical_boundry(self, num_cards):
@@ -186,7 +196,7 @@ class Player():
 ############## end of player class ###########################
 class Dealer(Player):
     """
-    this class implements the logic for the blackjack dealer.
+    this class implements the logic for the blackjack blackjack_game_dealer.
     it is a subclass of player
     """
     HARD_STAY = 18
@@ -223,8 +233,8 @@ class Dealer(Player):
             card.set_face_state(CardFaceState.UP)
     def should_hit(self, debug=False):
         """
-            return true if the dealer should hit based on the current hand
-            conditions for if a dealer should hit
+            return true if the blackjack_game_dealer should hit based on the current hand
+            conditions for if a blackjack_game_dealer should hit
             # 1. hand value is less <= 16
             # 2. if a soft 17 (contains an ace)
 
@@ -234,15 +244,45 @@ class Dealer(Player):
 
         value = self.get_hand_value()
         if debug:
-            print("DEBUG -- dealer hand value is {}".format(value))
+            print("DEBUG -- blackjack_game_dealer hand value is {}".format(value))
         if (value < self.HARD_STAY-1) or (value == self.HARD_STAY-1 and self.hand_contains_card_type(CardFaceType.ACE)):
             return True
         else:
             return False
 
-VALID_PLAYER_ACTION = ("stay", "hit")
-BLACKJACK_VALUE = 21
-SCREEN_CLEAR = '\n'*30
+class UserPlayer(Player):
+    """
+        this is a class that implements the user player. 
+        TODO:  refactor "holdings" --> "funds"
+    """
+    def __init__(self, holdings=0):
+
+        Player.__init__(self)
+        self.__funds = holdings
+
+    
+    def add_winnings(self, winnings):
+        self.__funds += winnings
+    
+    def get_funds(self):
+        return self.__funds
+    
+    def subtract_losses(self, loss):
+        self.__funds -= loss
+        
+    
+
+#### end UserPlayerClass #####
+
+class GameInfo():
+    
+    def set_wager_amount(self, wager=1):
+        self.__wager_amount = wager
+
+    def get_wager_amount(self):
+        return self.__wager_amount
+
+##### GameInfo class 
 
 def valid_player_action(player_input):
     """
@@ -257,71 +297,87 @@ def valid_player_action(player_input):
             break
     return valid
 
-def play_back_jack():
-    """ main logic for a game of blackjack"""
+def play_back_jack(blackjack_player, blackjack_dealer, player_wager=1):
+    """ 
+       main logic for a game of blackjack
+       blackjack_player = object of UserPlayer class
+       blackjack_dealer = object of the blackjack_dealer class
+       player_wager = amount in dollars to bet
+       TOOD:  add logic to ask blackjack_player how much they want to wager, check that the blackjack_player has enough funds to wager
+       
+    """
     player_action_input = str()
+
 #  initialize the deck
-    game_deck = Deck()
+    game_deck = BlackJackDeck()
     game_deck.generate_deck_cards()
     game_deck.shuffle_cards()
-# create the dealer and the player
-    player = Player()
-    dealer = Dealer()
-# deal two cards the player - face up
-    player.recieve_card(game_deck.deal_card())
-    player.recieve_card(game_deck.deal_card())
 
-# dealer deals two cards, face one face up, face down
-    dealer.recieve_card(game_deck.deal_card())
-    dealer.recieve_card(game_deck.deal_card(CardFaceState.DOWN))
-# display the dealer hand and the its visible value
-    print("dealer is showing {}".format(dealer.get_visible_hand_value()))
-    dealer.display_hand()
+# clear the hand of the blackjack_dealer and the blackjack_player
+    blackjack_player.clear_hand()
+    blackjack_dealer.clear_hand()
+    
+# deal two cards the blackjack_player - face up
+    blackjack_player.recieve_card(game_deck.deal_card())
+    blackjack_player.recieve_card(game_deck.deal_card())
+
+# blackjack_dealer deals two cards, face one face up, face down
+    blackjack_dealer.recieve_card(game_deck.deal_card())
+    blackjack_dealer.recieve_card(game_deck.deal_card(CardFaceState.DOWN))
+# display the blackjack_dealer hand and the its visible value
+    print("blackjack_dealer is showing {}".format(blackjack_dealer.get_visible_hand_value()))
+    blackjack_dealer.display_hand()
     print()
-# display the player hand and its value
-    print("you have {}".format(player.get_hand_value()))
-    player.display_hand()
-# prompt player to hit UNTIL the player "stays" or is bust.
-# if the player has blackjack then skip this part
+# display the blackjack_player hand and its value
+    print("you have {}".format(blackjack_player.get_hand_value()))
+    blackjack_player.display_hand()
+# prompt blackjack_player to hit UNTIL the blackjack_player "stays" or is bust.
+# if the blackjack_player has blackjack then skip this part
     while player_action_input != "stay":
         valid_action = False
         while not valid_action:
             player_action_input = input("do you want to hit or stay?\n").lower()
             valid_action = valid_player_action(player_action_input)
-# if player action  = hit --> deal card, print hand and value
+# if blackjack_player action  = hit --> deal card, print hand and value
         if(valid_action and player_action_input == "hit"):
-            player.recieve_card(game_deck.deal_card())
+            blackjack_player.recieve_card(game_deck.deal_card())
             clear_screen()
-            print("dealer is showing {}".format(dealer.get_visible_hand_value()))
-            dealer.display_hand()
+            print("blackjack_dealer is showing {}".format(blackjack_dealer.get_visible_hand_value()))
+            blackjack_dealer.display_hand()
             print()
-            print("you have {}".format(player.get_hand_value()))
-            player.display_hand()
+            print("you have {}".format(blackjack_player.get_hand_value()))
+            blackjack_player.display_hand()
             print()
-        if player.get_hand_value() > BLACKJACK_VALUE:
+        if blackjack_player.get_hand_value() > BLACKJACK_VALUE:
             print("PLAYER HAS BUSTED -- HOUSE WINS!!")
             exit(0)
-    # let dealer hit until bust or stay at soft hard 18
+    # let blackjack_dealer hit until bust or stay at soft hard 18
     clear_screen()
     print("showing the dealers' hand\n")
-    dealer.show_card_faces()
-    print("dealer is showing {}".format(dealer.get_hand_value()))
-    dealer.display_hand()
+    blackjack_dealer.show_card_faces()
+    print("blackjack_dealer is showing {}".format(blackjack_dealer.get_hand_value()))
+    blackjack_dealer.display_hand()
     print()
-    print("you have {}".format(player.get_hand_value()))
-    player.display_hand()
+    print("you have {}".format(blackjack_player.get_hand_value()))
+    blackjack_player.display_hand()
     print()
     time.sleep(4)
-    while dealer.should_hit():
+    while blackjack_dealer.should_hit():
         clear_screen()
-        print("dealer is drawing a card")
+        print("blackjack_dealer is drawing a card")
         time.sleep(2)
-        dealer.recieve_card(game_deck.deal_card())
-        dealer.display_hand()
+        blackjack_dealer.recieve_card(game_deck.deal_card())
+        blackjack_dealer.display_hand()
         print()
-        player.display_hand()
+        blackjack_player.display_hand()
 # final game winner logic
-    determine_blackjack_winner(player, dealer)
+    game_winner = determine_blackjack_winner(blackjack_player, blackjack_dealer)
+    
+    if(game_winner is blackjack_player):
+        blackjack_player.add_winnings(player_wager)
+    else:
+        blackjack_player.subtract_losses(player_wager)
+        
 ### end play black jack function
 
 def determine_blackjack_winner(player, dealer):
@@ -365,7 +421,52 @@ def clear_screen():
     else:
         _ = os.system('clear')
 
+def collect_player_wager(game_player):
+  
+    valid_bet = False
+    
+    while not valid_bet:
+        bet = input("how much would you like to like to bet? ")
+     
+        if(int(bet) > game_player.get_funds() or not bet.isnumeric() ):
+            print("invalid bet amount, try again muthafucka")
+        else:
+            valid_bet = True
+    return int(bet)
+
 #### main body ####
-print("Betting functionality not yet implemented :(\n")
-play_back_jack()
+blackjack_game_player = UserPlayer(holdings=STARTING_DEFAULT_HOLDINGS)
+blackjack_game_dealer = Dealer()
+replayGame = True
+
+print("welcome to CLI black jack, you have ${} to play with. ".format(blackjack_game_player.get_funds()))
+game_wager = collect_player_wager(blackjack_game_player)
+play_back_jack(blackjack_player = blackjack_game_player, blackjack_dealer = blackjack_game_dealer, player_wager = game_wager)
+
+playerFunds = blackjack_game_player.get_funds()
+
+if playerFunds <= 0:
+	print("you are broke!! goodbye broke nigga  :)")
+	replayGame = False
+    
+while replayGame:
+	if playerFunds > 0:
+		replay = input("you have ${} remaining. would you like to play again? (yes/no)".format(blackjack_game_player.get_funds()))
+		if("yes" == replay ):
+			play_back_jack(blackjack_game_player, blackjack_game_dealer, collect_player_wager(blackjack_game_player))
+		else:
+			print("good-bye")
+			replayGame = False
+	else:
+		print("you have no more money. Get cho biatch ass away from the table!")
+		replayGame = False
 exit(0)
+	
+	
+	
+
+
+    
+# TODO: create logic to update player winnings  and ask to play gain
+# TODO:  add the main-program definition
+
