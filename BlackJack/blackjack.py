@@ -303,8 +303,7 @@ def play_back_jack(blackjack_player, blackjack_dealer, player_wager=1):
        blackjack_player = object of UserPlayer class
        blackjack_dealer = object of the blackjack_dealer class
        player_wager = amount in dollars to bet
-       TOOD:  add logic to ask blackjack_player how much they want to wager, check that the blackjack_player has enough funds to wager
-       
+     
     """
     player_action_input = str()
 
@@ -373,11 +372,13 @@ def play_back_jack(blackjack_player, blackjack_dealer, player_wager=1):
 # final game winner logic
     game_winner = determine_blackjack_winner(blackjack_player, blackjack_dealer)
     
-    if(game_winner is blackjack_player):
+    if game_winner is blackjack_player:
         blackjack_player.add_winnings(player_wager)
-    else:
+    elif game_winner is blackjack_dealer:
         blackjack_player.subtract_losses(player_wager)
-        
+    else:
+    	pass
+    
 ### end play black jack function
 
 def determine_blackjack_winner(player, dealer):
@@ -388,7 +389,7 @@ def determine_blackjack_winner(player, dealer):
         dealer -- object of the Dealer class
 
         returns:
-            object that has the better or winning hound
+            object that has the better or winning hound or none if a push
     """
     player_value = player.get_hand_value()
     dealer_value = dealer.get_hand_value()
@@ -434,33 +435,39 @@ def collect_player_wager(game_player):
             valid_bet = True
     return int(bet)
 
-#### main body ####
-blackjack_game_player = UserPlayer(holdings=STARTING_DEFAULT_HOLDINGS)
-blackjack_game_dealer = Dealer()
-replayGame = True
 
-print("welcome to CLI black jack, you have ${} to play with. ".format(blackjack_game_player.get_funds()))
-game_wager = collect_player_wager(blackjack_game_player)
-play_back_jack(blackjack_player = blackjack_game_player, blackjack_dealer = blackjack_game_dealer, player_wager = game_wager)
-
-playerFunds = blackjack_game_player.get_funds()
-
-if playerFunds <= 0:
-	print("you are broke!! goodbye broke nigga  :)")
-	replayGame = False
-    
-while replayGame:
-	if playerFunds > 0:
-		replay = input("you have ${} remaining. would you like to play again? (yes/no)".format(blackjack_game_player.get_funds()))
-		if("yes" == replay ):
-			play_back_jack(blackjack_game_player, blackjack_game_dealer, collect_player_wager(blackjack_game_player))
-		else:
-			print("good-bye")
-			replayGame = False
-	else:
-		print("you have no more money. Get cho biatch ass away from the table!")
+def blackjack_game():
+	blackjack_game_player = UserPlayer(holdings=STARTING_DEFAULT_HOLDINGS)
+	blackjack_game_dealer = Dealer()
+	replayGame = True
+	
+	print("welcome to CLI black jack, you have ${} to play with. ".format(blackjack_game_player.get_funds()))
+	game_wager = collect_player_wager(blackjack_game_player)
+	play_back_jack(blackjack_player = blackjack_game_player, blackjack_dealer = blackjack_game_dealer, player_wager = game_wager)
+	
+	playerFunds = blackjack_game_player.get_funds()
+	
+	if playerFunds <= 0:
+		print("you are broke!! goodbye broke nigga  :)")
 		replayGame = False
-exit(0)
+	    
+	while replayGame:
+		if playerFunds > 0:
+			replay = input("you have ${} remaining. would you like to play again? (yes/no)".format(blackjack_game_player.get_funds()))
+			if("yes" == replay ):
+				play_back_jack(blackjack_game_player, blackjack_game_dealer, collect_player_wager(blackjack_game_player))
+			else:
+				print("good-bye")
+				replayGame = False
+		else:
+			print("you have no more money. Get cho biatch ass away from the table!")
+			replayGame = False	
+
+
+#### main body ####
+if __name__ == '__main__':
+	blackjack_game()
+	exit(0)
 	
 	
 	
