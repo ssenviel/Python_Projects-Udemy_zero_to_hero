@@ -1,0 +1,1270 @@
+NOTE 10/3/2018:  pick back up section 5, lecture 36:  useful operators.
+
+
+
+
+overview:
+	Python 2 vs. Python3:
+		print   vs  print()
+		
+		ASCII vs UNICODE
+		
+		
+	development environments:
+		Notebook environments -- allows for input an output to be seen next to each other
+		    good for learning.   supports visualizations, in-line markdown notes
+			
+
+	NOTE:  the coding style standard for Python is PEP8.
+	NOTE:  for variable names it is best practice to start with a lower case letter.
+	     
+    NOTE:  Python is a Dynamically typed language.  meaning that variables don't have to have a data type specified in the declaration.  
+	     unlike a staticly typed language like C, C++ or Java where a data type must be used in the definition of a variable name.  
+		   because Python is dynamically typed also means that the value of a variable can be re-assigned with different data types without re-declaring the variable.
+		   
+    NOTE:  the "type()" function can be used to find out the type of a variable.
+	
+	NOTE:  there is a built in function called sorted(<list>)  that will return a sorted version of the list.
+	
+	
+	
+	NOTE:  methods vs lists:
+	
+	NOTE:  multi-line comments in python are done via 3 single quotes.
+	    ex:
+			'''
+			comments go here
+			'''
+----------
+progress notes:
+	1. formatting -- there is a lot to learn here.   bookmarked a page related to all the formatted output options on 9/30
+	    TODO:  play around with outputting in more ways than one.
+		
+	
+------------------------------------
+Numbers:
+	integer division will give back a floating point number unless it is cast as an int
+	
+
+
+---------------------------
+
+Python Object & Structure Basics:
+
+	int 
+
+	float --
+	
+		print formatting with floats:  {<value>:<width>.<precision>f}
+					width = total number of whitespace
+					precision = number of places to the right of the decimal point
+							
+			ex:  
+				result = 100/77
+				print("the result was {r:10:3f}".format(r=result))
+	
+	
+	
+	Strings  (str)  --
+	
+		Strings in Python are immutable after they are created.  meaning they cannot be altered at a specific index.
+			however variables can be re-assigned to new strings via concatenation, slicing, indexing of existing strings.  this works for the same variable names as well
+			
+		NOTE: concatenation works with both the + and * symbols.
+		   example:  'Hello' + 'World' = 'Hello World' 
+		   example:  'z' * 10 = 'zzzzzzzzzz'  (10 'z')
+		   example:  word += character*3  (concatenates the word string with 3 instances of the character)
+	
+	
+		indexing or slicing can be used to grab sub-sections of the string
+	      indexing allows for 1 element of the ordered sequence to be accessed.  
+		    reverse indexing is also available (like Perl)
+					String = " H  E  L  L  0"
+					index:     0  1  2  3   4
+		   reverse index:      0 -4 -3 -2  -1
+		  
+		   it is also possible to index into a newly created string without assigning a variable to it
+		     ex: 'Hello World'[0]  -->  H
+			 
+		  
+		  slicing allows for a range of the ordered sequence to be accessed.
+		  
+			Slicing:  a way to access a range (substring) of the the string.
+					        [start index :  end index-1 : step]
+							access range is exclusive so it will go from the 1st index to last index-1
+							
+						ex: myString="Python";
+						   myString[0:1] --> P
+						   myString[1:4] -->  yth
+						   
+						   if you leave the second argument out then it will go to the end of the string
+						   
+							ex:
+								myString[1:] --> ython
+
+							if you leave the first aguement blank then the slice will go from idx 0 to the end-index-1
+							  ex:
+								myString[:3] = Pyt
+								
+						   
+						   also Supports a step size of the slice.
+						  myString[1::2]  --> yhn
+						
+						   step size can also be a negative number.
+							neat trick:  if you use [::-1] that will provide a reversed version of the string
+							   
+
+				NOTE on double vs single quotes:
+					if you are using apostrophies in the string (can't, I'm etc)  then you need to use double quotes to encapsulate the string.
+					otherwise the interpreter will think that the string is bounded by the single quotes and you will get an error.
+					
+					
+				String properties and methods: TODO:  need to study all of the available ones that show up in pyCharm
+				
+				String formatting when printing:
+		
+					string literal method (f-strings):  uses the 'f' flag at the beginning of the string
+							NOTE:  this version is only available in  Python 3.6 or later.
+				
+				
+					using the .format() method: will interpolate strings in place of the brackets
+						ex: print('the {} {} {} '.format('fox', 'brown', 'quick'));
+						   
+						   this will print "the fox brown quick"
+						   
+						  but it can also be used in a way where numbers are added to specify which numbers in the format function call go where.
+						  
+						ex: print('the {2} {1} {0} '.format('fox', 'brown', 'quick'));
+					
+					         this will print "the quick brown fox"
+					
+					      
+						  
+						 can also use a variable assignment   ex: print('the {q }{b} {f}'.format(f='fox' , b='brown' , q='quick'))
+						     
+							 will print "the quick brown fox"
+							 
+				NOTE: there is a built in function for strings call join.   can be used to translate a list into a string with a delimeter between each element
+					ex:
+					list=['a', 'b', 'c']
+					stringofList = ' '.join(list) --> 'a b c'
+					stringofList2 = 'x'.join(list) --> 'axbxc'
+				
+					
+	
+	Lists -- (list) -- ordered sequence of objects
+		can also support slicing.
+		reverse slicing on a list will create a new list with the indexes reversed.
+		number of elements in the list can be found by the len()  function
+	    can concatenate lists by using the '+' operator
+		
+		control & access methods:
+			list.append() -- adds the item to the end of the list.  this can only add a single element.
+			list.pop() -- remove an element from the list.  if no arg for the index is given then it will pop the last element of the list.  
+			list.sort() -- will sort the list in place.  does not return anything.
+			list.reverse() -- in place reversal of the list contents
+			list.index() --  find  index of an item.  if the item is not in the list then you get an error.
+			list.clear() --
+			list.copy() --
+			list.extend() --
+			list.insert() --
+			list.remove(<value>) -- removes the first occurance of the value.  will also resize the list
+			list.count(<item to count>) --counts the number of times an item occurs in a list.  
+			list.extend() -- appends multiple elements individually. 
+		    list.insert(<index>, <object>) -- inserts the object at the desired index.  if an object is already at the index then it will push it out to later index of the list and preserve that object.
+			
+	
+		nested lists don't look the same as multidimensional arrays.  they are defined differently.
+		
+			ex:  [1, 3, [1, 2] ]
+			
+			here the 3rd element of the list is another list but the 1st 2 are not.
+			  to access the nested list the syntax would be  <list name>[2][1]  or <list name>[2][0]
+			  
+	
+	--------------------------------------------------------
+	Dictionaries (dict) --  un ordered key:value pairs   (technical answer: un ordered mappings for storing objects)  
+	
+	
+		dictoionaries can have nested dictionaries as the value.
+		
+		ex:
+			my_dict={'k1':123, 
+			         'k2':[0,1, 2] ,
+					 'k3':{'insideKey':100}  
+					 };
+					 
+	if you wanted to get to the "100" value it would be acessed like this
+		my_dict['k3']['insideKey']
+	
+		remember dictionaries provide an un-orded mapping of OBJECTS.  so the indexing the 'k3' key gives you an object that is another dictionary
+	
+	
+		NOTE:  there is an ordereddict object that provides ordering capabilities to a dictionary.
+		
+		NOTE:  by default, iterating through a dictionary will only iterate through the keys
+		
+		dictionary comprehensions: on the fly way of creating a dictionary, similar to list comprehensions
+			ex:
+				{x:x**2 for x in range(10)}
+							this generates a dictionary where the key goes from 0 - 9 and the value is the square of the key
+							
+		
+		control & access methods:
+			items() -- can be used to unpack the dictionary pairs
+			keys() -- returns a tuple of the keys in a dictionary
+			values() -- returns a tuple of the values in a dictionary
+            iteritems() -- iterates through all the items in a dictionary.
+			        ex:
+						for k in <dictionary_name>.iteritems():
+                             print k
+							
+					this will print each item the dictionary.  each item stored to 'K' will be a tuple.
+					
+			itervalues() -- iterates through all the values of each item in the dictionary
+			iterkeys() --  iterates through all the keys of each item in the dictionary.
+							 
+--------------------------------------------------------
+
+	
+		
+	
+	Tuples (tup) -- pronounced "too-puls", they are and ordered unmodifiable (immuteable) sequence of objects
+			NOTE:  remember these are defined by a parathesis  ' (  ) ' 
+	
+	
+		control & access methods:
+			count()
+			len()
+			index()
+	
+	
+			* Tuple unpacking:  Tuples inside of a list
+				within the context of a for loop you can get the individual elements of a tuple inside the list by doing tuple unpacking.
+				
+				ex: given a list, myList =[(1,2), (3,4), (5,6), (7,8) ]
+	
+					iterating through the list in a for loop in the normal way will just provide each Tuple.
+					
+					to get the individual items of the tuple you can use the following syntax:
+						for (a, b) in myList:
+							statement...
+							.
+							.
+							.
+					
+				  this will allow the "unpacking" of each element of the Tuple into variables 'a' and 'b' respectively.
+				  
+							
+						
+	
+	
+	-------------------------------------------------------------------------
+	Files -- FILE IO
+		use the open(<file name as string>)  method to open a file. this returns an object  (file handle)
+			NOTE:  if the file is not in the location then a FileNotFoundError will be thrown.
+			NOTE:  if you do not include the full path to the file the Python interpreter will default to the current directory that the python script was running in to search for the file.
+			
+			
+		using the <file object>.read()  method will read the entire file as one String.
+			NOTE:  file read in Python uses a cursor.  (similar to fseek).  this cursor is by character
+			NOTE:  to reset the cursor you have to call <file object>.seek(0)  to reset the position in the file.
+			
+			
+			
+		<file object>.readlines() -- method will return a list where each item is a line of the file
+		
+		<file object>.close() -- will close the file
+			
+			NOTE:  for proper file usage (open -> use -> close)  the  following structure can be used
+				
+					with open(<file name>) as <file object>:
+						statements ...
+						statements ... 
+			
+				 this will automatically close the file after this section of code has ended.
+				 
+		the open method takes arguments that allow for access permissions on the file as well.
+		
+			 open( <file_name>, <access mode> )
+			
+				access modes:
+					'r' = read only	
+					'w' = write only -- this will overwrite files or create a new one.  
+						NOTE: if you try to read from a file only opened for write an io.UnsupportedOperation exception will be thrown.
+						
+					'a' = append only -- this will add onto files
+					'r+' = read and write -- this will overwrite on existing cursor locations
+					'w+' = writing and reading but will overwrite(read: remove the existing contents) an existing file or create a new file. 
+					
+			to write to a file use the following:
+				<file object>.write( <data to write> )
+				<file object>.writelines( <data to write> )
+				
+			other methods :
+				readable()
+				seek()
+				seekable()
+				tell()
+				truncate()
+				writeable()
+---------------------------------------------------------
+	
+	Sets--   unorded collection of unique objects
+	    
+			* creating a set object is done by using the set() constructor
+			  ex:   mySet = set()
+			   
+			NOTE:  printing set contents to the console they will show up in brackets " {}"  similar to dictionaries but without the key:value pairing.
+			
+	
+			control & access methods: TODO:  play around with this.
+				add() -- adds an element to the set
+				
+			NOTE:  to get the size of a set use the built-in len() function	
+		
+  built-in methods for sets:  Advanced Sets Lecture
+     set.clear()  -- clears the set
+	 set.copy()  -- creats a copy of the set -- this is whole new object.  changes to the original won't be reflected in the copy
+	 set.difference(<set1>, ... <set n>) -- returns a set that is the difference of 2 or more sets.
+	 set.difference_update(<set>) -- will update the calling set to be the difference of that set and and the set argument
+     set.discard(<item to discard>) -- will remove the given element / item from a set. if the provided element to discard is not in the set then it nothing happens.
+	 set.intersection(<set1>, ... <set n>) -- will return a set that contains all the comment elements of the sets.  aka intersection
+     set.intersection_update(<set1>) -- will update the calling set to be the intersection of itself and the other set.
+	 set.isdisjoint(<set1>) -- returns a boolean based on of the calling set and set1 have no commonility.  a.k.a disjoint
+     set.issubset(<set1>) -- returns a boolean based on if the calling set is a subset of the set provided in the args.
+	 set.issuperset(<set1>) -- returns a boolean based on if the calling set is a superset of the set provided in the args.
+	 set.symmetric_difference(<set1>) -- returns a set that is the difference of the calling set and the set passed as an arg. 
+	 set.symmetric_difference_update(<set1>) -- updates the calling set to be the symmetric difference of itself and the set passed as an arg.
+	 set.union(<set1>) --  returns as set that is the union of all the sets
+	 set.update(<set1>) -- "update" version of union
+	 
+	 
+      
+------------------------------------------------------------------
+		
+	Booleans (bool) --  True / False
+		
+	
+---------------------------------------------------------------------
+
+
+
+Comparison Oprerators:
+
+	logical (i.e boolean) comparison operators : "and"  ,  "or"  "not"
+
+	chained comparison operators:
+		ex:  if (condition 1) and (condition 2)
+
+		
+		"not"  works similar to the '!' in C and Java
+		
+		
+	if, else, elif
+	
+----------------------------
+  Logic Control : loops
+	
+	NOTE:  in for  loops there is a syntax trick that can be used if you do not intend to use the iterator variable and only want to repeat an operation
+	
+		ex:   for _ in "Hello World:
+				print('Cool!')
+				
+		this will print "Cool!" 10 times.  the '_' character is like a null variable.  this is supposed to be a read-ability trick.
+		
+		
+	while loops can also have a conditional "else" condition: 
+	
+		ex:
+			while (condition):
+			
+				statements...
+				
+			else:
+				statements
+				
+	
+---------------------------
+
+	Useful operators & built in functions:
+
+	*	range(<start>, <stop>, <optional step size>)   :
+			if only one arg is passed to this it will use that as the stop arg and go from 0 to <stop>-1
+			if 2 args are used then is will use that first as <start>  and go from there to stop-1
+			
+		NOTE:  range is a generator.  if you want the list of numbers generated by the range() operatator then you need to cast it as a list by using the List constructor.
+		NOTE: a generator will create information without storing it all to memory.
+			
+	* enumerate(<iterable object>):  this will allow for iteration through a list and provide a tuple of each entry item that will contain the index and item of the iterable entry 
+			ex: 
+				 word =  'abcde'
+				 
+				 for item in enumerate(word):
+					print(item)
+					
+					
+				will give the output --
+					(0, 'a')
+					(1, 'b')
+					(2, 'c')
+					(3, 'd')
+					(4, 'e')
+					
+				this can also support tuple unpacking 
+				
+			ex: 
+				word =  'abcde'
+				 
+				 for (index,letter) in enumerate(word):
+					print(index)
+					print(letter)
+					print('\n')
+					
+					
+				will give the output --
+					0
+					a
+					
+					1
+					b
+					
+					2
+					c
+					
+					3
+					d
+					
+					4
+					e
+					
+					
+		*zip(<iterable object>, ... , <iterable object n>):   this function allows for quick combining of iterable objects and when used in a for loop will allow for iteration over the combined iterable.  (kind of like the zip utility)
+
+				NOTE:  zip() on its own will just return a memory address of the location of the combined data set
+				NOTE:  zip() will combine the iterables in the order of the arguments that are given to it.
+				NOTE:  zip() is will only be able to combine in accordinace with the length of the shortest iterable.
+				NOTE:  when used in a for loop, zip()  will provide a tuple for each item, if you want to create a list from zip() then it must be re-casted.
+				NOTE:  tuple unpacking is also supported for this
+				
+				ex: 
+					myList1 = [1, 2, 3]
+					myList2 = ['a', 'b', 'c']
+					myList3 = [100, 200, 300]
+					
+					for item in zip(myList1, myList2, myList3):
+						print(item)
+						
+					
+				gives the output:
+					(1, 'a', 100)
+					(2, 'b', 200)
+					(3, 'c', 300)
+					
+					
+					
+		* 'in'; keyword:  determines if an element is contained within an iterable object; returns a boolean.		(kind of like ArrayList.contains method in Java)
+		
+				ex: 
+					'x' in [1, 2, 3] ;
+					
+				will return False
+				
+			This keyword can also be used with dictionaries but you have to specify if you want to know if it is in Keys or Values
+			
+		* min()  and max().   can be used to get the largest or smallest number of a list.
+				NOTE:  these methods also work with 2 numbers as well.
+		
+			
+		* importing functions:
+			syntax :    from <package> import <method>
+			
+			ex: importing the shuffle function from the random package
+				
+				from random import shuffle
+				
+			NOTE:  the shuffle functions will do an in-place change on the list
+			
+			
+		* random number generation -- randint()  function
+			
+				from random import randint
+				
+				to generate a random integer in the range from 0 - 100  (exclusive)
+					randint(0, 100)           -- no need to do modulus like in C & Java
+					
+		* user input using the input(<message to user>) function
+			NOTE:  this will always treat input from the user as string
+					
+			
+---------------
+Statements:
+
+  List Comprehensions:  a way of generating list contents on the fly in an iterative way without using a for loop	with .append()
+	this is one-liner shit that flattens out a for loop.  not worth using yet but need to come back to and do exercises before placing in a resume?
+	
+	ex: myString = "Hello"
+		myList=[]
+		for letter in myString:
+			myList.append(letter)
+			
+			|
+			|
+			V
+			
+		myList[letter for letter in myString]
+		
+		start with for loop logic and repeat the iterator  used for the iterable
+
+		ex: 
+			myList[ num for num in range(0,11)]  -->  a list that contains elements 0 to 10
+			
+			myList[ num**2 for num in range(0,11)]  -->  list that contains the square of numbers from 1 through 10
+			
+		can also provide an if statement at the end:
+		ex:
+			myList[ x for x in range (0, 11) if x%2==0]  -->  creates a list of all the even numbers from 0 through 10
+			
+		can also provide an if - else for a comprehension
+		ex:
+			results = [x if x%2==0 else 'ODD' for x in range(0,11)]  --> creates a list where the even numbers are the number and odd numbers are replaced by 'ODD'
+				i.e [0, 'ODD' 2, 'ODD' 4, 'ODD', 6, 'ODD', 8 ,'ODD', 10]
+				
+
+------------------
+
+methods and Functions:
+
+   method vs functions terminology:
+			built in objects use methods
+			
+			functions are user defined.
+			
+		Defining a function:
+			
+			def <function_name>(function args...):
+				''' 
+				 docstring info to explain function
+				'''
+				statements...
+				
+   
+			NOTE: function args can also have a default value.
+				 ex:  def <function_name>(arg1=default_value, ...):
+					'''
+					Docstring
+					'''
+					statements...
+					statements...
+					
+   ------------------
+     *args and **kWargs:  arguments and keyword arguments
+		i.e. variable argument lists
+			
+		def myfunc(*args):
+			
+			creates a tuple called args that can be used in the function
+			
+		def myfunct(**kwargs):
+			
+			creates a dictionary of key value pairs.
+			
+			it would have to be called in a way like below:
+				
+				myfunct(fruit='apple', meat='bacon');
+				
+				
+		*args and **kwargs can be combined in the same function definition.
+		
+		
+   
+   
+   --------------------------------------------------------
+   
+   
+	Lambda experessions, Map and Filter Functions:
+	
+	Map:  this is built in operation that will link a function to an iterable object. perfoming the function on each element of the iterable object
+	  this could be used to replace operations that would otherwise need a loop
+	   map(<function name>, <iterable> )
+	
+		NOTE:  DO NOT add the parenthesis.  it will cause an error.  only put in the name of the function 
+	
+		NOTE:  when the map function is run it will by default return a memory address location to an object if it is not assigned to something
+		NOTE:  the object can be transformed to a list like below
+		  list ( map( <function name>, <iterable> ) )
+		  
+		 NOTE:  this result of the map can be iterated through and can also be transformed to a list
+			
+			
+			for item in map(<function>, <iterable>):
+				statements...
+		  
+		
+		
+			list( map( <function>, <iterable>)  );    <--  returns a list
+		
+		
+	Filter:  this is a built in operation that can be used to apply filtering logic to splice out information from an iterable. for example wanting to get all the even numbers from a list
+	       filters allow for this without having to create a custom for loop.
+		   
+	
+		
+		filter( <function name>, <iterable> )
+	
+		NOTE:  just like map only put the function name.
+		
+		NOTE:  if not assigned to anything it will give pack a memory address to the object
+	
+		NOTE:  the object can be transformed to a list like below
+		list(	filter( <function name>, <iterable> ) )
+		
+		
+		
+		Lambda's are a way of creating an on-the-fly function, or ananonymous functions.  if you don't want or need to define a function for an operation lambda's are the tool to use
+				you use the 'lambda' keyword to define a lambda operation
+			ex:  
+				list( map (lambda num:num**2, myNums))
+				
+				* "lambda num:num**2"   creates an on-the-fly-function that will take 'num' as an input and then return the square of it
+				* "myNums"  is the list of numbers
+				
+				* the end result is an one-line operation that will put square all the items in myNums and return it in a list.
+		
+		
+			ex:  list( filter (lambda num:num%2==0, myNums) )
+			
+			 " this will filter myNums through a function that will return a list for all items in myNums that are even.
+			 
+			 final notes:
+				MAP -- maps an opertation onto a iterable and creates another iterable
+				FILTER -- uses a boolean expression to on an iterable to create another iterable of items that evaluated to True.
+				
+				LAMBDAs -- these are powerful but can be syntaticly complicated. best to use only in a way that will not hamper readability.
+							for complex functions that may require more than one argument it may be better to just use a normal function
+-----------------------------------------------------------------------
+	
+	Terminology NOTE:   variables names are stored within a namespace .  namespaces have a scope 
+		
+		when python looks for variables within a namespace it goes by the LEBG rule
+			#1 Local: names not assigned in any way within a function (normal and lambda), and not declared global in that function
+			
+			#2 Enclosing Function locals: Names int eh local scope of any and all enclosing functions, from inner to outer
+			
+			#3 Global (module): NAmes assigned at the top level of a module file or declared global in a defined function within the file
+			
+			#4 Built-in (Python): Names preassigned in the built-in names module (i.e open, range, SyntaxError)
+			
+				
+	
+	
+	Nested Statements:
+		NOTE:  it is possible to have functions defined within functions
+		
+	
+	Scope:
+		Global Keyword -- used to import a variable from the global namespace.
+			when Global <var name> is used in a function it will tell the interpreter to use the global variable associated in that namespace.
+			 this provides a way for functions to modify global variables.
+			 
+			
+	
+
+----------------------------
+
+
+OOP:
+	terminology:
+		functions that are part of a class implementation are referred to as methods.
+		attributes are the same as members in JAVA.  only they do not have to be defined before they can be set in the constructor
+		
+	Keywords:
+			self  -- same concept as "this"  in Java.  allows reference to the specific object of that class.
+			
+		
+
+	Classes:  NOTE:  class names are in camelCase
+			syntax structure:
+			
+				class <className>( <optional super class> ):
+			
+					# class object attributes -- these would be same for any instance of the class and should not use the 'self' keyword.   (like Static in Java)
+					Common_class_attribute = "SOMETHING!"					<-- could be referenced by <className>.Common_class_attribute().
+					
+					
+				    # constructor example 
+					def __init__(self):															<-------- CONSTRUCTOR, self must always be there but when the constructor is called the optional ones should be there
+						
+						#**  the 2 lines below are called attributes
+						self.member1 =1;
+						self.member2 =2;
+					
+					def __init__(self, member1=1):				<--- this defines a constructor with a default value for member1=1.  if no args are passed the constructor this value will be used on invocation.
+						...				
+			
+			
+					# method example	
+					def method1(self):					<-------  NOTE:  the self keyword is used here in the definition to attach this method to the object.  use this as the first argument to any method or constructor definition
+						"statements"  ...
+																NOTE:   when working with methods (constructors included) that access attributes use the 'self' keyword so that it will explicitly access the attribute for the object
+																
+			NOTE:  attributes (class variables)  can be specified in the constructor or class body but they should refer to "Self"
+			
+	***	
+	Objects:  just call the constructor
+		objectOfClass = className()				
+			
+			
+***			
+	Inheritance & polyMorphism:
+	
+		in python sub-classes are referred to as derived classes.   to create a derived class you pass in the name of the parent class to the definition of the derived class
+	
+		ex: 
+			class Animal():								<----- base class definition
+				
+				def __init__(self):
+					print("ANIMAL CREATED)
+				
+				def who_am_i(self):
+					print("I am an animal")
+				
+				def eat(self):
+					print("I'm Eating");
+					
+				
+			class Dog(Animal):								<-- derived class definition,  Dog inherits from Animal
+			
+				def __init__(self):
+					Animal.__init__(self)                      <----   this calls the constructor of the base class  (same as this.super()  in Java)
+					print("Dog Created):
+		
+				def who_am_i(self):							<--- overwrite of method is done by having the same name as the base class method.
+					print("I am a Dog);			
+	
+	
+	
+	SIDE TOPIC -- Abstract classes:   classes that are not expected to be directly instantiated by an object. 
+	the way this can be enforced within code implementation is to "raise" (i.e throw)  an error inside of the abstract class definition
+	
+		
+		special / Majic / Dunder methods:
+			these are methods that start and end with double underscores.   (i.e. __init__()  )
+			when defined within a class they can be used to override built in python methods.
+			
+			ex:
+					Class C1():
+					
+						def __init__(self):
+							pass
+						
+						def __str__(self):					<---  this would be used to override the built-in function call that casts an object to a string
+							statements...
+						
+						def __len__(self):					<--- this would be used to override the built-in function call to get the length of an iterable.
+						
+							statements ... 
+	
+	SIDE TOPIC -- memory de-allocation:
+		removing varaibles from memory is done with the "del"  keyword.   this deletes the object from the workstation memory.
+		a destructor can be created within a class by creating a Dunder method that implements a version of del for that class.
+		
+	SIDE TOPIC -- access modifiers & encapsulation:
+		by default all attributes are public.   encapsulation is not enforced by the Python language so protected and private attributes so it must be done via naming convention
+		
+	SIDE TOPIC -- multiple constructors:
+		python does not support having multiple constructors for the same class !!  
+		
+		
+-------------------------
+
+Modules and Packages:  Pip and PyPi  (started 10/29/2018 -- redo/pick back up on 11/1/2018 )
+		pip is a package manager used for installing packages from the PyPi  repository
+		
+	
+	Creating modules and packages.
+	 NOTE:  modules are just a .py script that can be called within another .py script.
+			a package is a collection of modules. however there is a key .py script called __init__.py that must be placed in the same folder/directory the collection of other .py scripts to let python 
+			   know that this collection of modules should be treated as a package.
+			   
+------------------------------------
+
+Errors & Exception Handling
+
+	try - except - finally
+	
+			try  is for a block of code that may throw some type of error  (similar to Java)
+			except is for a block of code that will execute if there is an error in the try block.  (like 'catch' in Java)
+			finally is a block of code to be executed regardless of an error or not.  (similar to Java)
+			
+		example structure:
+		
+			try:
+				statements that could generate an error ...
+			
+			except:
+				execption hanndler statements..
+				
+			finally:
+				staements to execute regardless of the error.
+				
+				
+		**	Python also allows the else conditional to be used in the event that the error does not occur.
+			
+			example structure:
+			
+				try:
+					statements that could generate an error ...
+				
+				except:
+					statements for exception handling
+					
+				else:
+					statements to execute if the exception doesn't occur.
+					
+		**  to catch a specific type of exception you can use the following.  mulitple exception handlers are allowed 
+			
+			try:
+			
+			except <exception error type>:
+			
+			except <exception error type>:
+			
+			finally:
+			
+		
+		** if no exception type is allowed then the except: block will catch all errors thrown by the try block.
+		
+		
+--------------------
+Quality control in Python
+   
+   Pylint  -- libary that looks at your code and reports back possible issues (styling convention tools)
+	   NOTE: have to install this.
+	   
+   unnittest -- built-in in library for unit testing python code
+	basic concepts of writing test functions.
+		1. import the unittest library  "import unittest"
+		2. import the python file that contains the functions/ classes to be tested.
+		3. define a class that inherits the TestCase class
+				class TestClass(unittest.TestCase):
+				
+			*** NOTE: it is necessary that the name of the test class starts with "Test"  for the test runner to pick it up  
+			
+		4. define a function in that class to test a function / member  
+		   this will use the one of built in functions like assertEqual()
+				**NOTE**:  in order for the test runner to execute this test the name of the method MUST start with "test"
+   
+		5. setup the test to be able to be called -- enable the test Runner
+			if __name__=='__main__':
+				unittest.main()
+				
+			there are also ways run tests with a finer level of control by directly invoking the test runner.
+			
+			  ex: using the text based test runner, with 
+				suite_of_tests = unittest.TestLoader().loadTestFromTestCase(<Testclass>)
+				unittest.TextTestRunner(<verbosity level>).run(suite_of_tests)
+		
+			  this will run all of the test members defined in the TestClass class (in alphabetical order)
+		
+		6. run the python "test" file like you would a normal python test program.
+		
+		
+		7. unittest can also be run from the command line to run tests from modules, classes or individual test methods:
+			python -m unittest test_module1 test_module2
+			python -m unittest test_module.TestClass
+			python -m unittest test_module.TestClass.test_method
+		
+		8.  a test case must be a subclass of  the unittest.testcase class.
+			
+		9. unittest.testcase API
+		    9.1  methods for running the test case:
+				setUp() -- prepares the test fixture. called immediately before calling tet method.  default implementation does nothing.  any exception raised by this method will be considered an error instead of a failure
+			
+				tearDown() -- called immediately after test. gets called even if the test method raises an exception. will only be called if setup succeeds and any exception raised by this methods will be seen as an error instead of a failure. 
+				default implementation does nothing.
+			
+				run()
+				
+				skipTest()
+				
+				
+				debug()
+				
+				
+			
+			9.2 test implementation
+			
+			
+			9.3 test inquiry methods
+			
+			
+			
+			
+		
+------------------
+
+Built-in Functions:
+
+	min()
+	max()
+	length()
+	sum()
+	split() --  for string manipulation.  can be called directly from a string
+	join()
+	string.lower() -- returns a lower-case version of a string
+	string.upper() -- returns an upper-case version of a string 
+	
+	
+-----------------------
+
+Decorators:   feature of python that allows for extending functionality
+
+	remember:  Python can interpret objects as a function.
+	two concepts important to decorators are being able to return a function and being able to pass an a function as an argument.
+   provides a way to enable functionality without modifying the original implementation.
+    this type of usage is common for creating code that runs on top of libraries and using frameworks like Django or Flask for building websites.
+  
+  NOTE:  python allows you to can define functions within a function.  the scope of functions defined this way will limit it to the function
+         it is also possible to return a function
+		 
+example:  defining functions within a function and returning a function
+
+	def hello(name='Steve'):
+	
+		def greet():
+			return 'this is the greet function inside of the hello function'
+		
+		
+		def welcome():
+			return 'this is the welcome function inside of the hello function'
+   
+		if name == 'Steve':
+			return greet
+		else:
+			return welcome
+			
+			
+	this would return the function as an object
+
+NOTE:  python also allows you to return pass a function as an arg to a function
+
+example: of using decorators
+
+	def new_decorator(original_function):
+	
+		def wrap_func():
+			print( "this will run before the original function")
+			
+			original_function()
+			print( "this will run after the original function")
+
+		return wrap_func
+			
+	@new_decorator
+	def func_needs_decorator():
+		print(" I want to be decorated")
+												<---  this code will "decorate" the original with the logic of the decorator.  
+												func needs decorator is called what will happen is that decorator will be invoked with func_needs_decorator as the argument to the function
+												then, this will invoke wrap_func() and will produce the output
+												
+													"this will run before the original function"
+													"I want to be decorated"
+													"this will run after the original function"
+													
+		if you want to turn off the logic of the decorator you can just comment out the  "@new_decorator"  line
+													
+	
+	
+	
+	
+	
+-----------------
+pick up on 1/10
+
+Generators:  functions that can return a value and then later resume to pick back up where it left off.
+              they allow for generating a sequence of values over time.
+			  main difference in syntax is the use of the yield statement.
+
+			  when a generator function is compiled it becomes and object that supports an iteration protocol
+   
+			  so when they are called in your code they don't actually return a value and then exit.     (reminds me of a thread)
+   
+			  Generator functions automatically suspend and resume their execution and state around the last point of value generation
+			  
+			  the advantage of the generator is that instead of having to compute an entire series of values, the generator computes one value and waits 
+			  until the next value is called for      <----   thread - fork process.
+			  
+			  this can help to reduce the amount of memory that a computation requires.
+			  
+			  the range() actually uses a generator.  it doesn't produce a list in memory for all the values from start to stop, instead it just keeps track of the last 
+			  number and the step size to provide a flow of numbers.
+			  
+			  if you needed collect a list of numbers using range then you need to cast it as a list.
+			  
+			  Note: a generator must be iterated through.
+			  
+			  fully understanding generators requires understanding the next and iter keywords.
+			  you can create a generator object by assigning a generator function to a variable
+			  
+				next( <generator object> ) gives next item in the sequence but, the "object" must be an iterator / iterable.  generator functions & objects are iterable.
+				iter( <generator object> ) allows you to iterate through a normal object.  use this if you want to be able to use next() on an object that is not a "native" generator
+					iter() example:
+						s = 'hello;
+												:  note that you can iterate through a string with a for loop but you cannot directly iterate over it  (or use next() )like a generator function
+												 :  to be able to use next you must use the iter() function to create an iterable object
+							
+						ex:  s_iter = iter(s)
+							now  next(s_iter)  will return each letter of the string when you use next on it.
+							
+   
+   
+     basic concept takeaway -  generators Yield values 
+   
+      HMWK:
+		problem 1:
+			create a Generator that generates the squares of numbers up to some number 'N'
+			
+		problem 2:
+			create a generator that yields "n" random number between a low and high number 
+			
+		problem 3: 
+			use the iter() function to convert the string 'hello'  into an iterator.
+
+		problem 4: 
+			explain a use case for a generator using a yield statement where you would not want to use a normal function with a return statement
+			    -- if you needed to create a single item in a series but the calculation was so large that it used a lot of time or memory
+			
+			
+--------------------------------
+https://docs.python.org/2/library/colections.html
+
+Collections module: built in module that implements container data types.  available since Python 2.X
+
+	Counter: collection class that contains methods counting the number of instances of object types in a collection
+
+	
+	Default Dict: Dictinonary that has a default Value.  will not throw a an exception if when trying to access a non-existant key it will return the value of the default object.
+	   ex: d = DefaultDict()
+	
+	
+	
+	
+	Ordered Dict: dictionary sub-class that remembers the order that the entries are added.
+	  ex:  d = OrderedDict()
+	  when testing for equality an orded dictionary will also consider the order that the entries were added.
+	  
+	
+	Named Tuple: a Tuple that allows for object assigns names and numerical index to entries in the tuple.
+	    named tuples are created almost like a class instances
+		ex:  Dog = namedtuple("Dog", 'age breed name')       
+															Dog is a named tuple with atttributes of age, breed and name
+															
+															NOTE: the attributes must have exactly 1 space between each field
+															
+															
+			sam_the_dog = Dog(age=2, breed="Lab", name='Sammy')
+			
+			sam_the_dog[0] = 2 ==  sam_the_dog.age = 2
+			sam_the_dog.breed = 'Lab' ==  sam_the_dog[1]
+			
+			
+
+----------------------------------------------------------------
+DateTime		
+			
+			
+--------------------------------------
+Rex-Ex Engine
+
+ 1.  have to import the re package
+ 2.  object oriented --   provides a "match"  object that can be used to get information about the match
+ 3.   finding all instances of a pattern --  re.findall(<match phrase>, "string to use") -- returns a list of all the matches.
+ 4.   using meta-characters.   
+        use the multi_re_find()  method  
+		greedy identifiers  don't have to be escaped.
+ 5.   character classes still use brackets.
+ 6.  the '^'  is also used for excluding a phrase within a character class. 
+ 7.   special escape codes are similar to PERL and other scripting languages.   -- these need to be backslash escaped when used in a string.
+     \s = whitespace
+	  \S = non-whitespace
+	  \d  =  digit
+	  \D  = non-digit
+	  \w = alphanumeric
+	  \W = non-alphanumeric
+	  
+ 
+    
+--------------------------------------
+StringIO module
+  * implements an in-memory like file object
+  
+  *  allows for creation of a file object out of a string.
+
+  there is also a CStringIO  module that implements a faster C-based string functionality
+  
+
+---------------------
+Advanced numbers:
+  built in functions for conversion
+  
+  hex( base-10 number ) -->  string representation of hex number
+  bin( base-10 number ) -->  string representation of binary number
+  pow(base, exponent, modulus)    base ^ Exponent  % modulus
+  abs() absolute value
+  round(number, number of decimal points)   -- will always return a floating point number
+  
+---------------------------------------------------
+Advanced Strings  -- methods built into string objects.
+  String.count("ocurrance of string to count")  --> returns the number of occurances of the string to count within the string
+  String.find("sub-string to find") --> returns the 0-based index of the first occurance of the string to find within the string
+  String.center(length of the new string, 'character to center the string around')-->returns a string that of new length that contains the old string, centered around the new character(s)
+  String.isalnum() -- returns a boolean based on if all characters of a string are alphanumberic
+  String.isnumeric() -- returns a boolean based on if all characters of a string are numeric
+  String.isalpha() -- returns a boolean based on if all the characters of a string are alphabetical
+  String.islower()  -- returns a boolean based on if all characters of the string are lower case
+  String.ispsace()  -- returns a boolean based on if all characters of the string are whitespace
+  String.isupper()  -- returns a boolean based on if all characters of the string are upper case
+  String.endswith('character') -- returns a boolean based on if a string ends with a specific character or specific characters
+  String.split(<delimiter>) -- returns a list of all the elements of string separated by a the delimiter.   the delemiter will not be part of any element of the list
+  String.partition('separator') -- searches for 'separator' and returns a tuple of contents  (head, separator, tail), where head is the contents before the separator and tail is the content after the separator
+                                  if separator is not found then is returned tuple will contain the origin string and 2 empty strings.
+  String.strip() -- removes whitespace from the front and back of the string
+  String.lstrip() -- removes whitespace from the front of the string
+  String.rstrip() -- removes whitespace from the end of the string
+								  
+---------------------------------------------------
+
+-------------------------------------------------
+OTHER NOTES:
+	Ternary operator:   < value if condition==true>  if   <condition>  else < value if condition==false >
+
+------------
+   
+ 
+ 
+ ----------------------------------------
+   milestone project 1: start on 10/14
+    create a Tic-Tac-Toe game for 2 human players.
+	
+	 * 2 players should be able to play the game (sitting at same computer
+	 * the board will be printed out every time a player maked a move
+	 * you should be abl to accept input of the player position and then place a symbol on the board.
+	 * the game will use the "numpad" to mathc the numbers to the grid on a tic-tac-toe board.
+	 
+	
+				-----------------------------
+				|	1	  |		2	|	3	|
+				-----------------------------
+				|	4	  |		5	|	6	|
+				-----------------------------
+				|	7	  |		8	|	9	|
+				-----------------------------
+	
+	finished on 10/21 	
+----------------------------------------------
+
+	milestone project 2: start on 11/6  -- this will utilize the GitHub account to get practice with Git VCS/ SCM
+	   create a simple text-based version of Black Jack game using OOP
+	   
+	   * computer dealer and a human player
+	   * start with a normal deck of 52 cards
+		
+	   * human player will have a bank role that they use to place a bet
+		*game flow:
+			human player will place a bet
+			dealer starts with 1 card face up and 1 card face down
+			player starts with 2 cards face up
+			player will go first in game play
+				player can have 2 actions; hit or stay
+			player will continue recieving cards until they ask to stay.
+			if the player has over 21 before the dealer starts to go then they bust.
+			dealer will continue hit until the they beat the player or the dealer busts
+			
+			card worth:
+				1. face cards (jack, queen king)  are worth 10.
+				2. aces can count for 1 or 11.  whichever value is better for the player.
+				
+				
+				
+		Objects:
+			Card - value & suit, i.e.  5 of spades.
+					state of face-up or face down.
+					
+			Deck - contains 52 cards.   4 suits of 13 cards each (Ace, 2-10, Jack, Queen, King)
+				 base deck:  this is the initialized deck in order -- clubs, spade, diamonds hearts
+				
+			Hand  - a set of cards
+				  - has an active value
+				
+			player / dealer has a hand that can grows throughout the course of the game 
+				
+			
+		actions:
+			deck:
+				shuffle -- randomizes the order of the cards in the deck
+				deal --  pops 1 card off of the deck and adds it to the player/dealer hand
+			
+			hand:
+				add card: adds a card to the hand
+				calculate value: goes through all the cards in the hand and gets the value.  this will take Aces into account
+			
+			player/dealer: 
+				receive card, 
+				update value of the hand
+				
+		useful CLI functions:
+			draw card
+			display hand
+			prompt for deal / hit / stay
+			
+			
+		game logic:
+			1.create deck
+			2. shuffle deck
+			3. deal player hand
+				2 initial cards both face up
+			4. deal dealer hand
+				2 initial cards. one face down , one face up
+			5. deal cards to player until they elect to stay or bust.
+			6. deal cards to dealer, each time evaluating the hand for win or bust.
+			
+			
+			
+		UI notes:  CARD DISPLAY
+		
+			-------------
+			|S         S|
+			|			|
+			|	  		|
+			|	  V		|
+			|			|
+			|           |
+			|S         S|
+			-------------
+			
+			s = SUIT ICON
+			v =VALUE A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K
+				
+		finished on 12/30
+------------------------------------------------------------------------------------------------------------------
+
+
+
+Capstone project:    up to you.   pick a project that will take a day and and 1 project that will take a week.
+
+
+project 1: (for work)   datalog stripper --  strip out all of the relevant information for a 1 test item.
+	input ->  log file and the test name
+	output ->  file that contains the contents of from the start of the test to the end of the tear down or start of another test.
+	
+	this will give practice using regular expressions with Python
+	
+project 1.1:
+	Alarm Clock - A simple clock where it plays a sound after X number of minutes/seconds or at a particular time.
+	
+project 2:  graphical Tic-Tac Toe
+
+project 3:  graphical BlackJack 
+
+project 4:
